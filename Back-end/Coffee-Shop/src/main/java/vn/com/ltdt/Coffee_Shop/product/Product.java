@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.com.ltdt.Coffee_Shop.category.Category;
+import vn.com.ltdt.Coffee_Shop.images.Image;
 
 
 import java.util.ArrayList;
@@ -33,4 +34,6 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<ProductDetail> productDetails = new ArrayList<>();
     private boolean isActive = true;
+    @OneToMany(mappedBy = "product")
+    private List<Image> images;
 }
