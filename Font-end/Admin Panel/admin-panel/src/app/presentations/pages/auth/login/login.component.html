@@ -1,0 +1,23 @@
+<div class="bg-slate-600 flex flex-1 h-full items-center justify-center">
+    <div class="bg-white h-fit w-96 rounded-lg p-4">
+        <p class="text-3xl text-center">Login</p>
+        <mat-form-field class="w-full mt-2 p-2">
+            <mat-label>Email</mat-label>
+            <input matInput #emailInput required />
+        </mat-form-field>
+        <mat-form-field class="w-full p-2">
+            <mat-label>Password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" #passwordInput required>
+            <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                <mat-icon class="mr-3">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <div class="w-full flex justify-end mb-2">
+            <a href="#" class="text-sm">Reset password</a>
+        </div>
+        <div class="w-full flex justify-end gap-3">
+            <button mat-raised-button color="primary" (click)="login(emailInput.value, passwordInput.value)" >Login</button>
+            <button mat-raised-button color="primary">Sign Up</button>
+        </div>
+    </div>
+</div>

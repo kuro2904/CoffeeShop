@@ -1,0 +1,13 @@
+<div fxLayout="column" style="height: 100vh; width: 100%;"  >
+    <div class="flex flex-1 flex-row justify-between p-3 bg-pink-300 h-fit text-2xl">
+        <span>
+            <a routerLink="/admin/" replaceUrl="true" class="">My Coffee Shop</a>
+        </span>
+        <div class="gap-3 flex flex-row">
+            <a routerLink="/admin/category" replaceUrl="true" class="hover:text-slate-200" >Categories</a>
+            <a routerLink="/admin/product" replaceUrl="true" class="hover:text-slate-200">Products</a>
+            <a routerLink="/admin/order" replaceUrl="true" class="hover:text-slate-200">Orders</a>
+        </div>
+    </div>
+    <router-outlet ></router-outlet>
+</div>
