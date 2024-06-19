@@ -6,8 +6,8 @@ export interface Product {
     name: string,
     description: string,
     categoryId: number,
-    categoryName:string,
+    categoryName?:string,
     isActive: number,
     details: ProductDetail[],
-    images: Image[]
+    images: string[]
 }
