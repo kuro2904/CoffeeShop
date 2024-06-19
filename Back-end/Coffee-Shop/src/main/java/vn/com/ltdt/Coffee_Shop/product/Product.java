@@ -35,5 +35,5 @@ public class Product {
     private List<ProductDetail> productDetails = new ArrayList<>();
     private boolean isActive = true;
     @OneToMany(mappedBy = "product")
-    private List<Image> images;
+    private List<Image> images = new ArrayList<>();
 }

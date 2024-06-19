@@ -1,14 +1,18 @@
-package vn.com.ltdt.Coffee_Shop.mappers;
+package vn.com.ltdt.Coffee_Shop.utils.mappers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import vn.com.ltdt.Coffee_Shop.images.Image;
 import vn.com.ltdt.Coffee_Shop.product.Product;
 import vn.com.ltdt.Coffee_Shop.product.ProductDetail;
 import vn.com.ltdt.Coffee_Shop.product.dtos.ProductDTO;
 import vn.com.ltdt.Coffee_Shop.product.dtos.ProductDetailDTO;
 
 @Service
+@RequiredArgsConstructor
 public class ProductMapper {
 
+    private final ImageMapper mapper;
 
     public ProductDTO mapToDTO(Product product) {
         return new ProductDTO(
@@ -16,8 +20,10 @@ public class ProductMapper {
                 product.getName(),
                 product.getDescription(),
                 product.getCategory().getId(),
+                product.getCategory().getName(),
                 product.isActive(),
-                product.getProductDetails().stream().map(this::mapToDetailDTO).toList()
+                product.getProductDetails().stream().map(this::mapToDetailDTO).toList(),
+                product.getImages().stream().map(Image::getUrl).toList()
         );
     }
 

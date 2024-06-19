@@ -3,7 +3,7 @@ package vn.com.ltdt.Coffee_Shop.category;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import vn.com.ltdt.Coffee_Shop.exceptions.ResourceNotFound;
-import vn.com.ltdt.Coffee_Shop.mappers.CategoryMapper;
+import vn.com.ltdt.Coffee_Shop.utils.mappers.CategoryMapper;
 
 import java.util.List;
 
