@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.ltdt.Coffee_Shop.exceptions.CoffeeShopException;
 import vn.com.ltdt.Coffee_Shop.exceptions.ResourceNotFound;
-import vn.com.ltdt.Coffee_Shop.mappers.RoleMapper;
+import vn.com.ltdt.Coffee_Shop.utils.mappers.RoleMapper;
 import vn.com.ltdt.Coffee_Shop.role.Role;
 import vn.com.ltdt.Coffee_Shop.role.RoleDTO;
 import vn.com.ltdt.Coffee_Shop.role.RoleRepository;

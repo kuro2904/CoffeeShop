@@ -1,13 +1,17 @@
 package vn.com.ltdt.Coffee_Shop.product.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import vn.com.ltdt.Coffee_Shop.category.Category;
 import vn.com.ltdt.Coffee_Shop.category.CategoryRepository;
 import vn.com.ltdt.Coffee_Shop.exceptions.CoffeeShopException;
 import vn.com.ltdt.Coffee_Shop.exceptions.ResourceNotFound;
-import vn.com.ltdt.Coffee_Shop.mappers.ProductMapper;
+import vn.com.ltdt.Coffee_Shop.images.Image;
+import vn.com.ltdt.Coffee_Shop.images.ImageRepository;
+import vn.com.ltdt.Coffee_Shop.images.ImageService;
+import vn.com.ltdt.Coffee_Shop.utils.mappers.ProductMapper;
 import vn.com.ltdt.Coffee_Shop.product.Product;
 import vn.com.ltdt.Coffee_Shop.product.ProductDetail;
 import vn.com.ltdt.Coffee_Shop.product.dtos.ProductDTO;
@@ -21,12 +25,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final CategoryRepository categoryRepository;
     private final ProductDetailRepository productDetailRepository;
+    private final ImageRepository imageRepository;
 
 
     @Override
@@ -41,21 +47,55 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO addProduct(ProductDTO req) {
-        Category category = categoryRepository.findById(req.categoryId()).orElseThrow(() -> new ResourceNotFound("Category", "Id", String.valueOf(req.categoryId())));
-        if(req.details() == null || req.details().isEmpty()) { throw new CoffeeShopException("Details is empty", HttpStatus.BAD_REQUEST); }
+        validateRequest(req);
+
+        Category category = categoryRepository.findById(req.categoryId())
+                .orElseThrow(() -> new ResourceNotFound("Category", "Id", String.valueOf(req.categoryId())));
+
+        Product product = mapToProduct(req, category);
+        var savedProduct = productRepository.save(product);
+
+        saveProductDetails(req, savedProduct);
+        saveProductImages(req, savedProduct);
+
+        log.info("Product with ID {} has been created successfully.", savedProduct.getId());
+        return productMapper.mapToDTO(savedProduct);
+    }
+
+    private void validateRequest(ProductDTO req) {
+        if (req.details() == null || req.details().isEmpty()) {
+            throw new CoffeeShopException("Details are empty", HttpStatus.BAD_REQUEST);
+        }
+        if (req.images() == null || req.images().isEmpty()) {
+            throw new CoffeeShopException("Images are empty", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    private Product mapToProduct(ProductDTO req, Category category) {
         Product product = new Product();
         product.setCategory(category);
         product.setName(req.name());
         product.setDescription(req.description());
-        var rs = productRepository.save(product);
-        req.details().forEach(d ->{
+        return product;
+    }
+
+    private void saveProductDetails(ProductDTO req, Product savedProduct) {
+        req.details().forEach(d -> {
             ProductDetail productDetail = new ProductDetail();
-            productDetail.setProduct(rs);
+            productDetail.setProduct(savedProduct);
             productDetail.setPrice(d.price());
             productDetail.setSize(d.size());
-            rs.getProductDetails().add(productDetailRepository.save(productDetail));
+            savedProduct.getProductDetails().add(productDetailRepository.save(productDetail));
         });
-        return productMapper.mapToDTO(rs);
+    }
+
+    private void saveProductImages(ProductDTO req, Product savedProduct) {
+        req.images().forEach(i -> {
+            Image image = new Image();
+            image.setProduct(savedProduct);
+            image.setUrl(i);
+            savedProduct.getImages().add(imageRepository.save(image));
+        });
     }
 
     @Override

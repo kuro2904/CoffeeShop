@@ -3,10 +3,7 @@ package vn.com.ltdt.Coffee_Shop.auth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.com.ltdt.Coffee_Shop.auth.dtos.LoginRequest;
 import vn.com.ltdt.Coffee_Shop.auth.dtos.LoginResponse;
 import vn.com.ltdt.Coffee_Shop.user.dtos.CustomerDTO;
@@ -15,6 +12,7 @@ import vn.com.ltdt.Coffee_Shop.user.dtos.EmployeeDTO;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin
 public class AuthController {
 
     private final AuthService authService;
