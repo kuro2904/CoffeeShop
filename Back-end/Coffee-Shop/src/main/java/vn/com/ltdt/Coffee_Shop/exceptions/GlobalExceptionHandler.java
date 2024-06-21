@@ -1,6 +1,5 @@
 package vn.com.ltdt.Coffee_Shop.exceptions;
 
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

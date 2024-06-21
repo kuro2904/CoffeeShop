@@ -10,7 +10,6 @@ import vn.com.ltdt.Coffee_Shop.exceptions.CoffeeShopException;
 import vn.com.ltdt.Coffee_Shop.exceptions.ResourceNotFound;
 import vn.com.ltdt.Coffee_Shop.images.Image;
 import vn.com.ltdt.Coffee_Shop.images.ImageRepository;
-import vn.com.ltdt.Coffee_Shop.images.ImageService;
 import vn.com.ltdt.Coffee_Shop.utils.mappers.ProductMapper;
 import vn.com.ltdt.Coffee_Shop.product.Product;
 import vn.com.ltdt.Coffee_Shop.product.ProductDetail;

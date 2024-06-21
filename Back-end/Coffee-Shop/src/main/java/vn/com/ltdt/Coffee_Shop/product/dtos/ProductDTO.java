@@ -1,7 +1,6 @@
 package vn.com.ltdt.Coffee_Shop.product.dtos;
 
 import jakarta.validation.constraints.NotNull;
-import vn.com.ltdt.Coffee_Shop.images.ImageDTO;
 
 import java.util.List;
 
