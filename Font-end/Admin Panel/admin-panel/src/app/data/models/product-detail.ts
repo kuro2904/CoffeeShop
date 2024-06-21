@@ -1,6 +1,6 @@
 export interface ProductDetail {
     id?: number,
-    productId: number,
+    productId?: number,
     size: string,
     price: number
 }

@@ -1,1 +1,80 @@
-<p>add-product works!</p>
+<div class="flex flex-1 flex-row justify-center m-3">
+  <button mat-fab extended (click)="uploadProduct(nameInput.value, descriptionInput.value, categoryId.value)">
+    <mat-icon>cloud_upload</mat-icon>
+    Upload Product
+  </button>
+</div>
+
+<div class="grid grid-cols-12 gap-4 mt-8 ms-4">
+  <div class="col-start-2 col-span-4 bg-white rounded-lg p-6 shadow-lg">
+
+    <p class="text-center text-2xl font-semibold mb-4">Add Product</p>
+    <mat-form-field class="w-full mb-4">
+      <mat-label>Name</mat-label>
+      <input matInput #nameInput required />
+    </mat-form-field>
+    <mat-form-field class="w-full mb-4">
+      <mat-label>Description</mat-label>
+      <input matInput #descriptionInput required />
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="w-full mb-4">
+      <mat-label>Category</mat-label>
+      <mat-select #categoryId required>
+        <mat-option *ngFor="let item of categories" [value]="item.id">{{ item.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <div class="col-start-8 col-span-4 bg-white rounded-lg p-6 shadow-lg">
+    <p class="text-center text-2xl font-semibold mb-4">Add Detail</p>
+    <mat-form-field class="w-full mb-4">
+      <mat-label>Size</mat-label>
+      <input matInput #sizeInput required />
+    </mat-form-field>
+    <mat-form-field class="w-full mb-4">
+      <mat-label>Price</mat-label>
+      <input matInput #priceInput required />
+    </mat-form-field>
+    <div class="flex justify-end mt-4">
+      <button mat-fab extended (click)="addDetails(sizeInput.value, priceInput.value)">
+        <mat-icon>add</mat-icon>
+        Add
+      </button>
+    </div>
+  </div>
+  
+  <div class="col-start-2 col-span-4 bg-white rounded-lg p-6 shadow-lg mt-4 h-96 max-h-96">
+    <p class="text-center text-2xl font-semibold mb-4">Pick Images</p>
+    <input type="file" multiple (change)="onFileSelected($event)" class="w-full mb-4" />
+    <div class="overflow-y-auto max-h-40">
+      <div *ngFor="let image of selectedImages" class="mb-4">
+        <img [src]="image" alt="Selected Image" class="w-full h-auto rounded-md shadow-sm" />
+      </div>
+    </div>
+  </div>
+  
+  <div class="col-start-8 col-span-4 bg-white rounded-lg p-6 shadow-lg mt-4 h-96 max-h-96 overflow-y-auto">
+    <p class="text-center text-2xl font-semibold mb-4">Detail Preview</p>
+    <table class="table-auto border-separate border border-gray-300 w-full text-center">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2">Size</th>
+          <th class="px-4 py-2">Price</th>
+          <th class="px-4 py-2">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let detail of productDetails; let i = index">
+          <td class="border px-4 py-2">{{ detail.size }}</td>
+          <td class="border px-4 py-2">{{ detail.price }}</td>
+          <td class="border px-4 py-2">
+            <button mat-fab extended (click)="removeDetail(i)">
+              <mat-icon>delete</mat-icon>
+              Delete
+            </button> 
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

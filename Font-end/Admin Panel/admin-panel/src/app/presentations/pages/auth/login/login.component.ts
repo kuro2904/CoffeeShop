@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService, LocalStorageService } from '../../../../data';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,7 @@ import { AuthService, LocalStorageService } from '../../../../data';
 })
 export class LoginComponent implements OnInit {
 
+  subcription = new Subscription;
   hide = true;
   clickEvent(event: MouseEvent){
     this.hide = !this.hide;
@@ -22,7 +24,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(email: string, password: string): void {
-      this.authService.login(email, password).subscribe({
+      this.subcription = this.authService.login(email, password).subscribe({
       next: (token) => {
         this.storageService.saveData('token',token.token);
         this.router.navigate(['/admin/home'], { replaceUrl: true });
@@ -31,5 +33,9 @@ export class LoginComponent implements OnInit {
       error: (err) => {console.log(err)},
       complete: () => console.log('Complete')
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subcription.unsubscribe();
   }
 }
