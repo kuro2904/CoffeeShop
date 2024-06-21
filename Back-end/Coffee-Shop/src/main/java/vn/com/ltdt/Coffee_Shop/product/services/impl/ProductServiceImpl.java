@@ -48,7 +48,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDTO addProduct(ProductDTO req) {
         validateRequest(req);
-
         Category category = categoryRepository.findById(req.categoryId())
                 .orElseThrow(() -> new ResourceNotFound("Category", "Id", String.valueOf(req.categoryId())));
 
@@ -109,6 +108,7 @@ public class ProductServiceImpl implements ProductService {
             productDetail.setSize(d.size());
             details.add(productDetail);
         });
+        product.setRate(req.rate());
         product.setActive(req.isActive());
         product.setName(req.name());
         product.setDescription(req.description());

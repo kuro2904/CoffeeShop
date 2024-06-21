@@ -30,7 +30,7 @@ public class Customer extends User {
     private List<Product> favoriteProducts = new ArrayList<>();
     @OneToMany(mappedBy = "customer")
     private List<Order> orderHistories = new ArrayList<>();
-
+    private String avatarUrl;
     @NotNull(message = "Role cannot be null")
     @ManyToOne
     @JoinColumn(name = "role_id")

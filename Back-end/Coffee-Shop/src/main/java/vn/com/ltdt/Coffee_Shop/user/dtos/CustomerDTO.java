@@ -15,6 +15,7 @@ public record CustomerDTO(
         @NotNull(message = "The phone number cannot be null")
         String phoneNumber,
         @NotNull(message = "The address cannot be null")
-        String address
+        String address,
+        String avatarUrl
 ) {
 }

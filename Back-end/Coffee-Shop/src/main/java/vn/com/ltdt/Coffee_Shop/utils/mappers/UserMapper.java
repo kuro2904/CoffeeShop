@@ -29,7 +29,8 @@ public class UserMapper {
                 customer.getEmail(),
                 customer.getPassword(),
                 customer.getPhoneNumber(),
-                customer.getAddress()
+                customer.getAddress(),
+                customer.getAvatarUrl()
         );
     }
 
