@@ -18,9 +18,8 @@
         android:name=".CoffeeShopApplication"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".MainActivity"
+           android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.CoffeeShopAndroidNative">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

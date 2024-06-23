@@ -25,7 +25,7 @@ public class Product {
     private String name;
     @NotNull(message = "The description cannot be null")
     private String description;
-    private float rate;
+    private float rate = 0;
     @NotNull(message = "The category cannot be null")
     @ManyToOne
     @JoinColumn(name = "category_id")

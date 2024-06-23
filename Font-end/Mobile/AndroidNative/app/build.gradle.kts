@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace = "vn.ltdt.coffeeshop_android_native"
+    namespace = "com.ltdt.coffeeshop_android_native"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "vn.ltdt.coffeeshop_android_native"
+        applicationId = "com.ltdt.coffeeshop_android_native"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
@@ -71,12 +71,17 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Coroutine
+    implementation(libs.kotlinx.coroutines.android)
     // Dagger Hilt
     implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
     // Retrofit
     implementation (libs.retrofit)
     implementation(libs.converter.gson)
     // Loading Image from URL
     implementation(libs.coil.compose)
+    // Jetpack Compose Nav
+    implementation(libs.androidx.navigation.compose)
 }
