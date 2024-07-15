@@ -14,4 +14,6 @@ public interface ProductService {
     List<ProductDTO> getAllProducts();
     ProductDTO addDetail(int id, ProductDetailDTO req);
     ProductDTO removeDetail(int id, int detailId);
+    List<ProductDTO> getProductByCategory(int categoryId);
+    List<ProductDTO> getProductByCategoryName(String name);
 }

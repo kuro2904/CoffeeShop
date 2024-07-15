@@ -9,5 +9,6 @@ sealed class Screen(
     data object PaymentScreen: Screen("payment_screen")
     data object FavoriteScreen: Screen("favorite_screen")
     data object ProductDetailScreen: Screen("product_detail_screen")
-
+    data object LoginScreen: Screen("login_screen")
+    data object RegisterScreen: Screen("register_screen")
 }

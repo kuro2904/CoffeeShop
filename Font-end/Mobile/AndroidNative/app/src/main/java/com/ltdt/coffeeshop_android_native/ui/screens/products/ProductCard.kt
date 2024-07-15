@@ -1,4 +1,4 @@
-package com.ltdt.coffeeshop_android_native.ui.components
+package com.ltdt.coffeeshop_android_native.ui.screens.products
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,16 +26,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ltdt.coffeeshop_android_native.R
 import com.ltdt.coffeeshop_android_native.data.domains.Product
 import com.ltdt.coffeeshop_android_native.data.domains.ProductDetail
+import com.ltdt.coffeeshop_android_native.ui.components.IconTextComponent
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
 
 @Composable
-fun ProductCard(modifier: Modifier = Modifier, product: Product,onClick: ()-> Unit) {
+fun ProductCard(
+    modifier: Modifier = Modifier,
+    product: Product,
+    onClick: () -> Unit,
+    isShowRate: Boolean = true
+) {
 
     Card(
         modifier
@@ -59,20 +66,24 @@ fun ProductCard(modifier: Modifier = Modifier, product: Product,onClick: ()-> Un
                 ProductImage(
                     modifier = Modifier.fillMaxWidth(),
                     product = product,
-                    isShowRating = true
+                    isShowRating = isShowRate
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = product.name,
                     color = Color.White,
                     textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = product.description,
                     color = Color.White,
                     textAlign = TextAlign.Start,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
@@ -85,9 +96,8 @@ fun ProductCard(modifier: Modifier = Modifier, product: Product,onClick: ()-> Un
                 ) {
 
                     IconTextComponent(
-                        width = 30,
                         icon = painterResource(id = R.drawable.dollar_sign),
-                        text = "4.2",
+                        text = product.details[0].price.toString(),
                         textSize = 16,
                         iconSize = 16,
                     )
@@ -99,7 +109,10 @@ fun ProductCard(modifier: Modifier = Modifier, product: Product,onClick: ()-> Un
                         Box(
                             modifier = Modifier
                                 .size(30.dp)
-                                .background(color = Primary, shape = RoundedCornerShape(percent = 20))
+                                .background(
+                                    color = Primary,
+                                    shape = RoundedCornerShape(percent = 20)
+                                )
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_add),
@@ -125,6 +138,15 @@ fun ProductCardPrev() {
 
     val details: List<ProductDetail> = listOf(ProductDetail(1, 0, "M", 4.5))
     val images: List<String> = listOf("aAA", "ddd")
-    val product = Product(0, "test", 1, "Description Test", "Cate 1", true, details, images)
+    val product = Product(
+        0,
+        "test",
+        1,
+        "Description Test",
+        "Cate 1",
+        true,
+        details = details,
+        images = images
+    )
     ProductCard(product = product, onClick = {})
 }

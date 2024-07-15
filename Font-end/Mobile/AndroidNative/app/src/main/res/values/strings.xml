@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CoffeeShop-Android-Native</string>
+    <string name="title_activity_auth">AuthActivity</string>
 </resources>

@@ -8,7 +8,7 @@ public record OrderDTO(
     String note,
     String address,
     String customerId,
-    String adminId,
+    String employeeId,
     String status,
     List<OrderDetailDTO> details
 ) {

@@ -7,6 +7,7 @@ data class Product(
     val description: String,
     val categoryName: String?,
     val isActive: Boolean,
-    val details:List<ProductDetail>,
+    val rate: Float = 0f,
+    val details: List<ProductDetail>,
     val images: List<String>
 )

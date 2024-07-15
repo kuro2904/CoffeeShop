@@ -6,5 +6,6 @@ data class User(
     val email: String,
     val password: String,
     val phoneNumber: String,
-    val address: String
+    val address: String,
+    val orderDetails: List<OrderDetail>
 )

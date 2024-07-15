@@ -1,6 +1,8 @@
 package vn.com.ltdt.Coffee_Shop.product;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
+@Slf4j
 public class ProductController {
 
     private final ProductService productService;
@@ -35,12 +38,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO product) {
+    public ResponseEntity<ProductDTO> createProduct(@Valid @RequestBody ProductDTO product) {
         return new ResponseEntity<>(productService.addProduct(product), HttpStatus.CREATED);
     }
 
     @PutMapping("{productId}/detail-add")
-    public ResponseEntity<ProductDTO> addProductDetail(@PathVariable int productId, @RequestBody ProductDetailDTO req) {
+    public ResponseEntity<ProductDTO> addProductDetail(@PathVariable int productId,@Valid @RequestBody ProductDetailDTO req) {
         return new ResponseEntity<>(productService.addDetail(productId, req), HttpStatus.CREATED);
     }
 
@@ -50,8 +53,14 @@ public class ProductController {
     }
 
     @PutMapping("{productId}")
-    public ResponseEntity<ProductDTO> updateProduct( @PathVariable int productId, @RequestBody ProductDTO product) {
+    public ResponseEntity<ProductDTO> updateProduct( @PathVariable int productId,@Valid @RequestBody ProductDTO product) {
         return new ResponseEntity<>(productService.updateProduct(productId, product), HttpStatus.OK);
+    }
+
+    @GetMapping("category")
+    public ResponseEntity<List<ProductDTO>> getProductByCategory(@RequestParam(name = "categoryId") int categoryId) {
+        log.info("Category Id : {}", categoryId);
+        return new ResponseEntity<>(productService.getProductByCategory(categoryId), HttpStatus.OK);
     }
 
 }

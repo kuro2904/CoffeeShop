@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.com.ltdt.Coffee_Shop.category.Category;
 import vn.com.ltdt.Coffee_Shop.images.Image;
+import vn.com.ltdt.Coffee_Shop.rating.Rating;
 
 
 import java.util.ArrayList;
@@ -25,7 +26,8 @@ public class Product {
     private String name;
     @NotNull(message = "The description cannot be null")
     private String description;
-    private float rate = 0;
+    @OneToMany(mappedBy = "product")
+    private List<Rating> ratings = new ArrayList<>();
     @NotNull(message = "The category cannot be null")
     @ManyToOne
     @JoinColumn(name = "category_id")

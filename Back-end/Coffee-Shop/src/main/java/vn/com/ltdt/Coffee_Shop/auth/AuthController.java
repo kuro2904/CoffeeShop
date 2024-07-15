@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.ltdt.Coffee_Shop.auth.dtos.LoginRequest;
-import vn.com.ltdt.Coffee_Shop.auth.dtos.LoginResponse;
+import vn.com.ltdt.Coffee_Shop.auth.dtos.AuthResponse;
 import vn.com.ltdt.Coffee_Shop.user.dtos.CustomerDTO;
 import vn.com.ltdt.Coffee_Shop.user.dtos.EmployeeDTO;
 
@@ -17,8 +17,8 @@ public class AuthController {
 
     private final AuthService authService;
     @PostMapping("login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        return ResponseEntity.ok(new LoginResponse(authService.login(loginRequest.email(), loginRequest.password())));
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(new AuthResponse(authService.login(loginRequest.email(), loginRequest.password())));
     }
 
     @PostMapping("signUp/employee")

@@ -7,9 +7,17 @@ import javax.inject.Inject
 
 class ProductRepositoryImpl @Inject constructor(
     private val apiService: ApiService
-):ProductRepository {
+) : ProductRepository {
 
     override suspend fun getAll(): List<Product> {
         return apiService.getAllProducts()
+    }
+
+    override suspend fun getProductsByCategory(categoryId: Int): List<Product> {
+        return apiService.getProductsByCategory(categoryId)
+    }
+
+    override suspend fun getProductById(productId: Int): Product {
+        return apiService.getProductById(productId)
     }
 }

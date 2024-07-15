@@ -10,7 +10,8 @@ public record ProductDTO(
         String name,
         @NotNull(message = "The description cannot be null")
         String description,
-        float rate,
+        double rate,
+        long rateSum,
         @NotNull(message = "The category Id cannot be null")
         int categoryId,
         String categoryName,

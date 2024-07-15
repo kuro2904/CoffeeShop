@@ -1,5 +1,7 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.homes
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -33,11 +35,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
+import com.ltdt.coffeeshop_android_native.AuthActivity
 import com.ltdt.coffeeshop_android_native.data.domains.Product
-import com.ltdt.coffeeshop_android_native.ui.components.ProductCard
+import com.ltdt.coffeeshop_android_native.ui.screens.products.ProductCard
 import com.ltdt.coffeeshop_android_native.ui.components.ToolBarComponent
 import com.ltdt.coffeeshop_android_native.ui.navigations.Screen
 import com.ltdt.coffeeshop_android_native.ui.theme.Gray
@@ -46,8 +49,9 @@ import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
 
 @Composable
 fun HomeScreen(
-    navController: NavController = rememberNavController(),
-    viewModel: HomeViewModel = hiltViewModel()
+    navController: NavController,
+    viewModel: HomeViewModel = hiltViewModel(),
+    context: Context
 ) {
     LazyColumn(
         modifier = Modifier
@@ -55,7 +59,16 @@ fun HomeScreen(
             .padding(top = 10.dp)
     ) {
         item {
-            ToolBarComponent(leftIcon = Icons.Outlined.Home, rightIcon = Icons.Outlined.Home)
+            ToolBarComponent(
+                leftIcon = Icons.Outlined.Home,
+                rightIcon = Icons.Outlined.Home,
+                onRightIconClick = {
+                    startActivity(
+                        context,
+                        Intent(context, AuthActivity::class.java),
+                        null
+                    )
+                })
             Spacer(modifier = Modifier.height(10.dp))
             Text(
                 modifier = Modifier.fillMaxWidth(),
@@ -81,7 +94,9 @@ fun HomeScreen(
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Tertiary,
                     unfocusedContainerColor = Tertiary,
-                    focusedTextColor = Color.White
+                    focusedTextColor = Color.White,
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
                 ),
                 shape = RoundedCornerShape(percent = 30),
             )
@@ -91,6 +106,9 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth(),
                 containerColor = Color.Transparent,
                 edgePadding = 0.dp,
+                divider = {
+
+                },
                 indicator = { tabPositions ->
                     Box(
                         modifier = Modifier
@@ -99,11 +117,13 @@ fun HomeScreen(
                             .size(5.dp)
                     )
                 },
-                divider = {}
             ) {
                 Tab(
                     selected = 0 == viewModel.tabSelectedIndex.intValue,
-                    onClick = { viewModel.tabSelectedIndex.intValue = 0 },
+                    onClick = {
+                        viewModel.tabSelectedIndex.intValue = 0
+                        viewModel.productFilteredByCategory(0)
+                    },
                     text = {
                         Text(
                             text = "All",
@@ -115,7 +135,10 @@ fun HomeScreen(
                 viewModel.categoriesState.value.categories.forEachIndexed { index, category ->
                     Tab(
                         selected = index + 1 == viewModel.tabSelectedIndex.intValue,
-                        onClick = { viewModel.tabSelectedIndex.intValue = index + 1 },
+                        onClick = {
+                            viewModel.tabSelectedIndex.intValue = index + 1
+                            viewModel.productFilteredByCategory(index + 1)
+                        },
                         text = {
                             Text(
                                 text = category.name,
@@ -139,6 +162,7 @@ fun HomeScreen(
                     viewModel.productsState.value.products,
                     key = { item -> item.id }) { item: Product ->
                     ProductCard(
+                        modifier = Modifier.padding(horizontal = 10.dp),
                         product = item,
                         onClick = { navController.navigate(Screen.ProductDetailScreen.route.plus("?productId=${item.id}")) })
                 }
@@ -153,12 +177,41 @@ fun HomeScreen(
                 Text(text = viewModel.categoriesState.value.error)
             }
 
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Left,
+                text = "Coffee bean",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.White,
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            LazyRow(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                userScrollEnabled = true,
+                contentPadding = PaddingValues(10.dp)
+            ) {
+                items(
+                    viewModel.productsState.value.products.filter {
+//                        it.categoryName.equals("BEAN")
+                        it.categoryId == 1
+                    },
+                    key = { item -> item.id }) { item: Product ->
+                    ProductCard(
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                        product = item,
+                        onClick = {
+                            navController.navigate(Screen.ProductDetailScreen.route.plus("?productId=${item.id}"))
+                        },
+                        isShowRate = false
+                    )
+                }
+            }
         }
-
-
     }
 }
-
-
-
-

@@ -71,6 +71,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    // Material Icons
+    implementation(libs.androidx.material)
     // Coroutine
     implementation(libs.kotlinx.coroutines.android)
     // Dagger Hilt
@@ -78,10 +80,13 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     kapt(libs.hilt.android.compiler)
     // Retrofit
-    implementation (libs.retrofit)
+    implementation(libs.retrofit)
     implementation(libs.converter.gson)
     // Loading Image from URL
     implementation(libs.coil.compose)
     // Jetpack Compose Nav
     implementation(libs.androidx.navigation.compose)
+//    // Room Database
+//    implementation(libs.androidx.room.runtime)
+//    kapt(libs.androidx.room.compiler)
 }

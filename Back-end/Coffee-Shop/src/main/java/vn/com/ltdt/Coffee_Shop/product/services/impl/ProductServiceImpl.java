@@ -107,7 +107,6 @@ public class ProductServiceImpl implements ProductService {
             productDetail.setSize(d.size());
             details.add(productDetail);
         });
-        product.setRate(req.rate());
         product.setActive(req.isActive());
         product.setName(req.name());
         product.setDescription(req.description());
@@ -139,5 +138,17 @@ public class ProductServiceImpl implements ProductService {
         product.getProductDetails().remove(detail);
         productDetailRepository.delete(detail);
         return productMapper.mapToDTO(product);
+    }
+
+    @Override
+    public List<ProductDTO> getProductByCategory(int categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFound("Category", "Id", String.valueOf(categoryId)));
+        return productRepository.findByCategory(category).stream().map(productMapper::mapToDTO).toList();
+    }
+
+    @Override
+    public List<ProductDTO> getProductByCategoryName(String name) {
+        Category category = categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFound("Category", "Name", String.valueOf(name)));
+        return productRepository.findByCategory(category).stream().map(productMapper::mapToDTO).toList();
     }
 }

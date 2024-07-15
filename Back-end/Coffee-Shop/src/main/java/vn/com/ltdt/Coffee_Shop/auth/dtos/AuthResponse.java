@@ -3,11 +3,11 @@ package vn.com.ltdt.Coffee_Shop.auth.dtos;
 import lombok.Getter;
 
 @Getter
-public class LoginResponse {
+public class AuthResponse {
     private final String type = "Bearer ";
     private final String token;
 
-    public LoginResponse(String token) {
+    public AuthResponse(String token) {
         this.token = token;
     }
 }

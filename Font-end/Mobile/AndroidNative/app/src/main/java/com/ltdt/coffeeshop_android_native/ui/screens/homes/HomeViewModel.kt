@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import okio.IOException
 import javax.inject.Inject
 
@@ -36,7 +37,7 @@ data class CategoryListState(
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    private val categoryRepository: CategoryRepository
+    private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
 
     private val _productListState = mutableStateOf(ProductListState())
@@ -59,9 +60,23 @@ class HomeViewModel @Inject constructor(
                 emit(Resource.Loading())
                 val products = productRepository.getAll()
                 emit(Resource.Success(products))
-            }catch (e: HttpException){
-                emit(Resource.Error(e.localizedMessage?: "An unexpected error"))
-            }catch (e: IOException){
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
+            } catch (e: IOException) {
+                emit(Resource.Error("Couldn't reach server. Check your internet connection."))
+            }
+        }
+    }
+
+    private fun getProductsByCategoryFlow(categoryId: Int): Flow<Resource<List<Product>>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                val filteredProducts = productRepository.getProductsByCategory(categoryId)
+                emit(Resource.Success(filteredProducts))
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
+            } catch (e: IOException) {
                 emit(Resource.Error("Couldn't reach server. Check your internet connection."))
             }
         }
@@ -73,9 +88,9 @@ class HomeViewModel @Inject constructor(
                 emit(Resource.Loading())
                 val products = categoryRepository.getAll()
                 emit(Resource.Success(products))
-            }catch (e: HttpException){
-                emit(Resource.Error(e.localizedMessage?: "An unexpected error"))
-            }catch (e: IOException){
+            } catch (e: HttpException) {
+                emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
+            } catch (e: IOException) {
                 emit(Resource.Error("Couldn't reach server. Check your internet connection."))
             }
         }
@@ -83,26 +98,58 @@ class HomeViewModel @Inject constructor(
 
     private fun getProducts() {
         getProductsFlow().onEach { result ->
-            when(result){
-                is Resource.Success -> _productListState.value = ProductListState(products = result.data ?: emptyList())
+            when (result) {
+                is Resource.Success -> _productListState.value =
+                    ProductListState(products = result.data ?: emptyList())
+
                 is Resource.Loading -> _productListState.value = ProductListState(isLoading = true)
-                is Resource.Error -> _productListState.value = ProductListState(error = result.message ?: "An unexpected error occurred")
+                is Resource.Error -> _productListState.value =
+                    ProductListState(error = result.message ?: "An unexpected error occurred")
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun getCategories(){
-        getCategoriesFlow().onEach { result ->
-            when(result){
-                is Resource.Success ->{
-                    _categoryListState.value = CategoryListState(categories = result.data ?: emptyList())
-                    Log.i("category fetch",result.data.toString() )
-                }
-                is Resource.Error -> _categoryListState.value = CategoryListState(error = result.message ?: "An unexpected error occured")
-                is Resource.Loading -> _categoryListState.value = CategoryListState(isLoading = true)
+    private fun getFilteredProducts(categoryId: Int) {
+        getProductsByCategoryFlow(categoryId).onEach { result ->
+            when (result) {
+                is Resource.Success -> _productListState.value =
+                    ProductListState(products = result.data ?: emptyList())
+
+                is Resource.Loading -> _productListState.value = ProductListState(isLoading = true)
+                is Resource.Error -> _productListState.value =
+                    ProductListState(error = result.message ?: "An unexpected error occurred")
             }
         }.launchIn(viewModelScope)
     }
+
+    private fun getCategories() {
+        getCategoriesFlow().onEach { result ->
+            when (result) {
+                is Resource.Success -> {
+                    _categoryListState.value =
+                        CategoryListState(categories = result.data ?: emptyList())
+                    Log.i("category fetch", result.data.toString())
+                }
+
+                is Resource.Error -> _categoryListState.value =
+                    CategoryListState(error = result.message ?: "An unexpected error occured")
+
+                is Resource.Loading -> _categoryListState.value =
+                    CategoryListState(isLoading = true)
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun productFilteredByCategory(categoryId: Int) {
+        viewModelScope.launch {
+            if (categoryId == 0) {
+                getProducts()
+            } else {
+                getFilteredProducts(categoryId)
+            }
+        }
+    }
+
 }
 
 

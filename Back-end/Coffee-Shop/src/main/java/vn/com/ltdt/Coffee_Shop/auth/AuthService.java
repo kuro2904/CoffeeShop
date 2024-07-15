@@ -1,5 +1,6 @@
 package vn.com.ltdt.Coffee_Shop.auth;
 
+import vn.com.ltdt.Coffee_Shop.auth.dtos.AuthResponse;
 import vn.com.ltdt.Coffee_Shop.user.dtos.CustomerDTO;
 import vn.com.ltdt.Coffee_Shop.user.dtos.EmployeeDTO;
 

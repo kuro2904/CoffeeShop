@@ -1,5 +1,6 @@
-package com.ltdt.coffeeshop_android_native.ui.components
+package com.ltdt.coffeeshop_android_native.ui.screens.products
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -18,9 +19,10 @@ import com.ltdt.coffeeshop_android_native.R
 import com.ltdt.coffeeshop_android_native.common.Constants.API_HOST
 import com.ltdt.coffeeshop_android_native.data.domains.Product
 import com.ltdt.coffeeshop_android_native.data.domains.ProductDetail
+import com.ltdt.coffeeshop_android_native.ui.components.IconTextComponent
 
 @Composable
-fun ProductImage(modifier: Modifier = Modifier, product: Product, isShowRating: Boolean) {
+fun ProductImage(modifier: Modifier = Modifier, product: Product? = null, isShowRating: Boolean) {
     Box(
         modifier = modifier
             .wrapContentSize()
@@ -32,18 +34,29 @@ fun ProductImage(modifier: Modifier = Modifier, product: Product, isShowRating: 
         contentAlignment = Alignment.Center,
     )
     {
-      AsyncImage(model = "http://$API_HOST:8080/api/v1/images/${product.images[0]}", contentDescription = "Product Image", modifier = Modifier.size(125.dp))
-//        Image(
-//            painterResource(id = R.drawable.ic_launcher_background),
-//            contentDescription = "Product Image",
-//
-//            )
+        if (product != null)
+            AsyncImage(
+                model = "http://$API_HOST:8080/api/v1/images/${product.images[0]}",
+                contentDescription = "Product Image",
+                modifier = Modifier.size(125.dp)
+            )
+        else
+            Image(
+                painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = "Product Image",
+
+                )
+
         if (isShowRating) {
             IconTextComponent(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .background(color = Color.Cyan, shape = RoundedCornerShape(bottomStart = 20.dp)),
-                width = 50,
+                    .background(
+                        shape = RoundedCornerShape(
+                            bottomStart = 20.dp,
+                        ),
+                        color = Color.Black.copy(alpha = 0.5f)
+                    ),
                 text = "4.5",
                 icon = painterResource(id = R.drawable.ic_star),
                 iconSize = 12,
@@ -59,6 +72,15 @@ fun ProductImage(modifier: Modifier = Modifier, product: Product, isShowRating: 
 fun ProductImagePrev() {
     val details: List<ProductDetail> = listOf(ProductDetail(1, 0, "M", 4.5))
     val images: List<String> = listOf("aAA", "ddd")
-    val product = Product(0, "test", 1, "Description Test", "Cate 1", true, details, images)
-    ProductImage(product = product, isShowRating = true)
+    val product = Product(
+        0,
+        "test",
+        1,
+        "Description Test",
+        "Cate 1",
+        true,
+        details = details,
+        images = images
+    )
+    ProductImage(isShowRating = true)
 }

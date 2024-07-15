@@ -1,4 +1,4 @@
-package com.ltdt.coffeeshop_android_native.ui.screens
+package com.ltdt.coffeeshop_android_native.ui.screens.favorites
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

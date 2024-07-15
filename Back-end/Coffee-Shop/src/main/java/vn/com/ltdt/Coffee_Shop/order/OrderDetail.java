@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vn.com.ltdt.Coffee_Shop.product.Product;
 import vn.com.ltdt.Coffee_Shop.product.ProductDetail;
 
 @Data
@@ -26,4 +27,7 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name = "product_detail_id")
     private ProductDetail productDetail;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 }
