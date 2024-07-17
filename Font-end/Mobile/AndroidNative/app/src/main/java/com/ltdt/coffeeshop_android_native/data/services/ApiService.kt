@@ -17,7 +17,7 @@ interface ApiService {
     suspend fun login(@Body phoneNumber: String, @Body password: String): Token
 
     @POST("auth/signUp/customer")
-    suspend fun register(@Body user: UserRegister): String
+    suspend fun register(@Body user: UserRegister): Token
 
     @GET("products")
     suspend fun getAllProducts(): List<Product>

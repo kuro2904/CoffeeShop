@@ -1,9 +1,6 @@
 package vn.com.ltdt.Coffee_Shop.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,6 +19,7 @@ public abstract class User implements UserDetails {
     private String id;
     @NotNull(message = "The name cannot be null")
     private String name;
+    @Column(unique = true)
     @NotNull(message = "The email cannot be null")
     @Email(message = "The email is not formatted")
     private String email;

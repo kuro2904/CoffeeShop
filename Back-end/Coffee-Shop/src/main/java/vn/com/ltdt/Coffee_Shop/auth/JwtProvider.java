@@ -22,11 +22,10 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String generateToken(Authentication authentication) {
-        User user = (User) authentication.getPrincipal();
+    public String generateToken(User user) {
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet claimSet = new JWTClaimsSet.Builder()
-                .subject(authentication.getName())
+                .subject(user.getEmail())
                 .issueTime(new Date())
                 .expirationTime(new Date(new Date().getTime() + 1000 * 60 * 60 * 24))
                 .claim("userId",user.getId())

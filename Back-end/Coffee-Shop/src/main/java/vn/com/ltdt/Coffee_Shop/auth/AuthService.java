@@ -6,6 +6,6 @@ import vn.com.ltdt.Coffee_Shop.user.dtos.EmployeeDTO;
 
 public interface AuthService {
     String login(String username, String password);
-    CustomerDTO signupCustomer(CustomerDTO request);
-    EmployeeDTO signupEmployee(EmployeeDTO request);
+    String signupCustomer(CustomerDTO request);
+    String signupEmployee(EmployeeDTO request);
 }

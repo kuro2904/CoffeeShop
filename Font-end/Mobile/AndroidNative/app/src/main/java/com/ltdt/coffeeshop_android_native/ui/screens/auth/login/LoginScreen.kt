@@ -120,14 +120,14 @@ fun LoginScreen(
                     Spacer(modifier = Modifier.height(30.dp))
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        placeholder = { Text(text = "Phone Number") },
+                        placeholder = { Text(text = "Email") },
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,
-                            focusedTextColor = Color.White
+                            focusedTextColor = Color.Black
                         ),
-                        value = viewModel.phoneNumber.value,
-                        onValueChange = { viewModel.phoneNumber.value = it })
+                        value = viewModel.emailState.value,
+                        onValueChange = { viewModel.emailState.value = it })
                     Spacer(modifier = Modifier.height(10.dp))
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
@@ -135,15 +135,20 @@ fun LoginScreen(
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
                             unfocusedContainerColor = Color.Transparent,
-                            focusedTextColor = Color.White
+                            focusedTextColor = Color.Black
                         ),
-                        value = viewModel.password.value,
-                        onValueChange = { viewModel.password.value = it })
+                        value = viewModel.passwordState.value,
+                        onValueChange = { viewModel.passwordState.value = it })
 
                     Spacer(modifier = Modifier.height(20.dp))
 
                     ElevatedButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            viewModel.login(
+                                email = viewModel.emailState.value,
+                                password = viewModel.passwordState.value
+                            )
+                        },
                         shape = RoundedCornerShape(percent = 15),
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(

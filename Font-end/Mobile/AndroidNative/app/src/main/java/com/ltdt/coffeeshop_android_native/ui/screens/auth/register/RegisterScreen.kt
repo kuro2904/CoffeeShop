@@ -2,6 +2,7 @@ package com.ltdt.coffeeshop_android_native.ui.screens.auth.register
 
 import AlertDialog
 import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -177,6 +178,7 @@ fun RegisterScreen(
                             containerColor = Primary
                         )
                     ) {
+                        Log.d("TAG", "RegisterScreen: ${viewModel.dialogState.intValue}")
                         when (viewModel.dialogState.intValue) {
                             0 -> {
                                 Text(
@@ -191,9 +193,7 @@ fun RegisterScreen(
                             }
 
                             2 -> {
-                                navController.navigate(Screen.LoginScreen.route) {
-                                    popUpTo(Screen.RegisterScreen.route) { inclusive = true }
-                                }
+                                context.finish()
                             }
 
                             3 -> {

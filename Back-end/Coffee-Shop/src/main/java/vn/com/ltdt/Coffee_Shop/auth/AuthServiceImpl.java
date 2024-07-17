@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.com.ltdt.Coffee_Shop.auth.dtos.AuthResponse;
 import vn.com.ltdt.Coffee_Shop.exceptions.ResourceNotFound;
+import vn.com.ltdt.Coffee_Shop.user.User;
 import vn.com.ltdt.Coffee_Shop.utils.mappers.UserMapper;
 import vn.com.ltdt.Coffee_Shop.role.Role;
 import vn.com.ltdt.Coffee_Shop.role.RoleRepository;
@@ -29,17 +30,16 @@ public class AuthServiceImpl implements AuthService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
-    private final UserMapper userMapper;
 
     @Override
     public String login(String username, String password) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return jwtProvider.generateToken(authentication);
+        return jwtProvider.generateToken((User) authentication.getPrincipal());
     }
 
     @Override
-    public CustomerDTO signupCustomer(CustomerDTO request) {
+    public String signupCustomer(CustomerDTO request) {
         Customer customer = new Customer();
         Role role = roleRepository.findByName("ROLE_CUSTOMER").orElseThrow(()-> new ResourceNotFound("Role","Name","ROLE_CUSTOMER"));
         customer.setName(request.name());
@@ -48,11 +48,11 @@ public class AuthServiceImpl implements AuthService {
         customer.setAddress(request.address());
         customer.setPhoneNumber(request.phoneNumber());
         customer.setRole(role);
-        return userMapper.mapToDTO(customerRepository.save(customer));
+        return jwtProvider.generateToken(customerRepository.save(customer));
     }
 
     @Override
-    public EmployeeDTO signupEmployee(EmployeeDTO request) {
+    public String signupEmployee(EmployeeDTO request) {
         Role role = roleRepository.findByName("ROLE_EMPLOYEE").orElseThrow(()-> new ResourceNotFound("Role","Name","ROLE_EMPLOYEE"));
         Employee employee = new Employee();
         employee.setName(request.name());
@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
         employee.setPhoneNumber(request.phoneNumber());
         employee.setWebsite(request.website());
         employee.setRole(role);
-        return userMapper.mapToDTO(employeeRepository.save(employee));
+        return jwtProvider.generateToken(employeeRepository.save(employee));
     }
 
 

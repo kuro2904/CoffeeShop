@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ltdt.coffeeshop_android_native.common.Resource
+import com.ltdt.coffeeshop_android_native.data.domains.Token
 import com.ltdt.coffeeshop_android_native.data.domains.UserRegister
 import com.ltdt.coffeeshop_android_native.data.services.AuthService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,14 +36,13 @@ class RegisterViewModel @Inject constructor(
     val userConfirmPassword = mutableStateOf("")
     val userPhoneNumber = mutableStateOf("")
 
-    private fun registerFlow(user: UserRegister): Flow<Resource<String>> {
+    private fun registerFlow(user: UserRegister): Flow<Resource<Token>> {
         return flow {
             try {
                 emit(Resource.Loading())
-                authService.register(user)
-                emit(Resource.Success("Register successfully"))
+                emit(Resource.Success(authService.register(user)))
             } catch (e: HttpException) {
-                emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
+                emit(Resource.Error(e.message ?: "An unexpected error"))
             } catch (e: IOException) {
                 emit(Resource.Error("Couldn't reach server. Check your internet connection."))
             }

@@ -86,6 +86,9 @@ dependencies {
     implementation(libs.coil.compose)
     // Jetpack Compose Nav
     implementation(libs.androidx.navigation.compose)
+    // Preference Datastore
+    implementation(libs.datastore.preferences)
+
 //    // Room Database
 //    implementation(libs.androidx.room.runtime)
 //    kapt(libs.androidx.room.compiler)

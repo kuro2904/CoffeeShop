@@ -22,12 +22,12 @@ public class AuthController {
     }
 
     @PostMapping("signUp/employee")
-    public ResponseEntity<EmployeeDTO> signUpEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return new ResponseEntity<>(authService.signupEmployee(employeeDTO), HttpStatus.CREATED);
+    public ResponseEntity<AuthResponse> signUpEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return new ResponseEntity<>(new AuthResponse(authService.signupEmployee(employeeDTO)), HttpStatus.CREATED);
     }
 
     @PostMapping("signUp/customer")
-    public ResponseEntity<CustomerDTO> signUpCustomer(@RequestBody CustomerDTO customerDTO) {
-        return new ResponseEntity<>(authService.signupCustomer(customerDTO), HttpStatus.CREATED);
+    public ResponseEntity<AuthResponse> signUpCustomer(@RequestBody CustomerDTO customerDTO) {
+        return new ResponseEntity<>(new AuthResponse(authService.signupCustomer(customerDTO)), HttpStatus.CREATED);
     }
 }

@@ -1,5 +1,6 @@
 package com.ltdt.coffeeshop_android_native.di
 
+import androidx.datastore.preferences.core.Preferences
 import com.ltdt.coffeeshop_android_native.common.Constants.API_HOST
 import com.ltdt.coffeeshop_android_native.data.repository.CategoryRepository
 import com.ltdt.coffeeshop_android_native.data.repository.ProductRepository
@@ -54,6 +55,5 @@ object DI {
     fun provideJwtService(): JwtService {
         return JwtServiceImpl()
     }
-    
 
 }
