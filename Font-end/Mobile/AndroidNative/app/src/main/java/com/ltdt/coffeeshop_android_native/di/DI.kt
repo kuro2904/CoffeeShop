@@ -1,6 +1,7 @@
 package com.ltdt.coffeeshop_android_native.di
 
 import androidx.datastore.preferences.core.Preferences
+import com.google.gson.Gson
 import com.ltdt.coffeeshop_android_native.common.Constants.API_HOST
 import com.ltdt.coffeeshop_android_native.data.repository.CategoryRepository
 import com.ltdt.coffeeshop_android_native.data.repository.ProductRepository
@@ -52,8 +53,7 @@ object DI {
 
     @Provides
     @Singleton
-    fun provideJwtService(): JwtService {
+    fun provideJwtService(): JwtService{
         return JwtServiceImpl()
     }
-
 }

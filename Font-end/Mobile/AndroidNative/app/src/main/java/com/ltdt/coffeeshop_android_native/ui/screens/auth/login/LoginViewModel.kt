@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ltdt.coffeeshop_android_native.common.Resource
 import com.ltdt.coffeeshop_android_native.data.domains.Token
+import com.ltdt.coffeeshop_android_native.data.domains.UserLogin
 import com.ltdt.coffeeshop_android_native.data.domains.UserRegister
 import com.ltdt.coffeeshop_android_native.data.services.AuthService
+import com.ltdt.coffeeshop_android_native.data.services.JwtService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authService: AuthService
+    private val authService: AuthService,
+    private val jwtService: JwtService
 ) : ViewModel() {
 
     private var state = mutableIntStateOf(0) // 0 - Waiting; 1 - Loading; 2 - Success; 3 - Error
@@ -41,6 +44,7 @@ class LoginViewModel @Inject constructor(
                         state.intValue = 2
                         emailState.value = ""
                         passwordState.value = ""
+                        it.data?.let { it1 -> jwtService.getUserId(it1) }
                     }
 
                     is Resource.Loading -> {
@@ -62,7 +66,7 @@ class LoginViewModel @Inject constructor(
         return flow {
             try {
                 emit(Resource.Loading())
-                emit(Resource.Success(authService.login(email, password)))
+                emit(Resource.Success(authService.login(UserLogin(email, password))))
             } catch (e: HttpException) {
                 emit(Resource.Error(e.message ?: "An unexpected error"))
             } catch (e: IOException) {

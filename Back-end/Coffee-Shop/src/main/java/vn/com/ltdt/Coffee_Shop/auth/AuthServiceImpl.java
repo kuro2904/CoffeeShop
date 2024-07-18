@@ -7,10 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.com.ltdt.Coffee_Shop.auth.dtos.AuthResponse;
 import vn.com.ltdt.Coffee_Shop.exceptions.ResourceNotFound;
 import vn.com.ltdt.Coffee_Shop.user.User;
-import vn.com.ltdt.Coffee_Shop.utils.mappers.UserMapper;
 import vn.com.ltdt.Coffee_Shop.role.Role;
 import vn.com.ltdt.Coffee_Shop.role.RoleRepository;
 import vn.com.ltdt.Coffee_Shop.user.Customer;
@@ -31,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtProvider jwtProvider;
 
+
     @Override
     public String login(String username, String password) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -41,7 +40,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String signupCustomer(CustomerDTO request) {
         Customer customer = new Customer();
-        Role role = roleRepository.findByName("ROLE_CUSTOMER").orElseThrow(()-> new ResourceNotFound("Role","Name","ROLE_CUSTOMER"));
+        Role role = roleRepository.findByName("ROLE_CUSTOMER")
+        .orElse(roleRepository.save(Role.builder().name("ROLE_CUSTOMER").build()));
         customer.setName(request.name());
         customer.setEmail(request.email());
         customer.setPassword(passwordEncoder.encode(request.password()));
@@ -53,7 +53,8 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String signupEmployee(EmployeeDTO request) {
-        Role role = roleRepository.findByName("ROLE_EMPLOYEE").orElseThrow(()-> new ResourceNotFound("Role","Name","ROLE_EMPLOYEE"));
+        Role role = roleRepository.findByName("ROLE_EMPLOYEE")
+        .orElse(roleRepository.save(Role.builder().name("ROLE_EMPLOYEE").build()));
         Employee employee = new Employee();
         employee.setName(request.name());
         employee.setEmail(request.email());

@@ -4,6 +4,7 @@ import com.ltdt.coffeeshop_android_native.data.domains.Category
 import com.ltdt.coffeeshop_android_native.data.domains.Product
 import com.ltdt.coffeeshop_android_native.data.domains.Token
 import com.ltdt.coffeeshop_android_native.data.domains.User
+import com.ltdt.coffeeshop_android_native.data.domains.UserLogin
 import com.ltdt.coffeeshop_android_native.data.domains.UserRegister
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,7 +15,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @POST("auth/login")
-    suspend fun login(@Body phoneNumber: String, @Body password: String): Token
+    suspend fun login(@Body loginRequest: UserLogin): Token
 
     @POST("auth/signUp/customer")
     suspend fun register(@Body user: UserRegister): Token
