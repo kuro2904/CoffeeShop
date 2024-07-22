@@ -1,6 +1,5 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.auth.login
 
-import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,9 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.ltdt.coffeeshop_android_native.common.Resource
 import com.ltdt.coffeeshop_android_native.data.domains.Token
 import com.ltdt.coffeeshop_android_native.data.domains.UserLogin
-import com.ltdt.coffeeshop_android_native.data.domains.UserRegister
 import com.ltdt.coffeeshop_android_native.data.services.AuthService
 import com.ltdt.coffeeshop_android_native.data.services.JwtService
+import com.ltdt.coffeeshop_android_native.data.services.SharePreferencesService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -24,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authService: AuthService,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val dataStorePref: SharePreferencesService
 ) : ViewModel() {
 
     private var state = mutableIntStateOf(0) // 0 - Waiting; 1 - Loading; 2 - Success; 3 - Error
@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
 
     private val errorState = mutableStateOf("")
     val error = errorState
-    
+
     var emailState = mutableStateOf("")
     var passwordState = mutableStateOf("")
 
@@ -44,7 +44,13 @@ class LoginViewModel @Inject constructor(
                         state.intValue = 2
                         emailState.value = ""
                         passwordState.value = ""
-                        it.data?.let { it1 -> jwtService.getUserId(it1) }
+                        it.data?.let { token ->
+                            dataStorePref.saveStringKey("token",token.token)
+                            dataStorePref.saveStringKey(
+                                "userId",
+                                jwtService.getUserId(token)
+                            )
+                        }
                     }
 
                     is Resource.Loading -> {
