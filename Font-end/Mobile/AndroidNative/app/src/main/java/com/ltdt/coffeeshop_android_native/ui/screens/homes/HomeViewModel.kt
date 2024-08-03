@@ -13,6 +13,7 @@ import com.ltdt.coffeeshop_android_native.data.domains.Category
 import com.ltdt.coffeeshop_android_native.data.domains.Product
 import com.ltdt.coffeeshop_android_native.data.repository.CategoryRepository
 import com.ltdt.coffeeshop_android_native.data.repository.ProductRepository
+import com.ltdt.coffeeshop_android_native.data.services.JwtService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -37,8 +38,9 @@ data class CategoryListState(
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    private val categoryRepository: CategoryRepository,
+    private val categoryRepository: CategoryRepository
 ) : ViewModel() {
+
 
     private val _productListState = mutableStateOf(ProductListState())
     val productsState: State<ProductListState> = _productListState
@@ -53,6 +55,7 @@ class HomeViewModel @Inject constructor(
         getProducts()
         getCategories()
     }
+
 
     private fun getProductsFlow(): Flow<Resource<List<Product>>> {
         return flow {
@@ -82,6 +85,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
     private fun getCategoriesFlow(): Flow<Resource<List<Category>>> {
         return flow {
             try {
@@ -95,6 +99,7 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
 
     private fun getProducts() {
         getProductsFlow().onEach { result ->

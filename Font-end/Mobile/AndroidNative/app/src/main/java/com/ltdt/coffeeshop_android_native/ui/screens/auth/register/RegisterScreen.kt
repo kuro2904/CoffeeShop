@@ -2,6 +2,7 @@ package com.ltdt.coffeeshop_android_native.ui.screens.auth.register
 
 import AlertDialog
 import android.app.Activity
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,6 +34,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -41,7 +43,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ltdt.coffeeshop_android_native.R
-import com.ltdt.coffeeshop_android_native.ui.navigations.Screen
 import com.ltdt.coffeeshop_android_native.ui.theme.Gray
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 
@@ -49,9 +50,11 @@ import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 fun RegisterScreen(
     modifier: Modifier,
     navController: NavController,
-    context: Activity,
     viewModel: RegisterViewModel = hiltViewModel()
 ) {
+
+    val context: Context = LocalContext.current
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -64,7 +67,7 @@ fun RegisterScreen(
             alignment = Alignment.TopCenter,
         )
         IconButton(
-            onClick = { context.finish() },
+            onClick = { (context as? Activity)?.finish() },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(10.dp),
@@ -193,7 +196,7 @@ fun RegisterScreen(
                             }
 
                             2 -> {
-                                context.finish()
+                                (context as? Activity)?.finish()
                             }
 
                             3 -> {

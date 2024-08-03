@@ -14,6 +14,9 @@ import retrofit2.http.Query
 
 interface ApiService {
 
+    @GET("customers/{userId}")
+    suspend fun getUser(@Path("userId") userId: String): User
+
     @POST("auth/login")
     suspend fun login(@Body loginRequest: UserLogin): Token
 

@@ -34,7 +34,7 @@ fun ProductImage(modifier: Modifier = Modifier, product: Product? = null, isShow
         contentAlignment = Alignment.Center,
     )
     {
-        if (product != null)
+        if (product != null && product.images.isNotEmpty())
             AsyncImage(
                 model = "http://$API_HOST:8080/api/v1/images/${product.images[0]}",
                 contentDescription = "Product Image",
@@ -57,7 +57,7 @@ fun ProductImage(modifier: Modifier = Modifier, product: Product? = null, isShow
                         ),
                         color = Color.Black.copy(alpha = 0.5f)
                     ),
-                text = "4.5",
+                text = product?.rate.toString(),
                 icon = painterResource(id = R.drawable.ic_star),
                 iconSize = 12,
                 textSize = 12

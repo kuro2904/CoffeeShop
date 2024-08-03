@@ -7,14 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import vn.com.ltdt.Coffee_Shop.exceptions.ResourceNotFound;
 import vn.com.ltdt.Coffee_Shop.user.User;
 import vn.com.ltdt.Coffee_Shop.role.Role;
 import vn.com.ltdt.Coffee_Shop.role.RoleRepository;
 import vn.com.ltdt.Coffee_Shop.user.Customer;
 import vn.com.ltdt.Coffee_Shop.user.Employee;
-import vn.com.ltdt.Coffee_Shop.user.dtos.CustomerDTO;
-import vn.com.ltdt.Coffee_Shop.user.dtos.EmployeeDTO;
+import vn.com.ltdt.Coffee_Shop.auth.dtos.CustomerRegisterDTO;
+import vn.com.ltdt.Coffee_Shop.auth.dtos.EmployeeRegisterDTO;
 import vn.com.ltdt.Coffee_Shop.user.repository.CustomerRepository;
 import vn.com.ltdt.Coffee_Shop.user.repository.EmployeeRepository;
 
@@ -38,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String signupCustomer(CustomerDTO request) {
+    public String signupCustomer(CustomerRegisterDTO request) {
         Customer customer = new Customer();
         Role role = roleRepository.findByName("ROLE_CUSTOMER")
         .orElse(roleRepository.save(Role.builder().name("ROLE_CUSTOMER").build()));
@@ -52,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public String signupEmployee(EmployeeDTO request) {
+    public String signupEmployee(EmployeeRegisterDTO request) {
         Role role = roleRepository.findByName("ROLE_EMPLOYEE")
         .orElse(roleRepository.save(Role.builder().name("ROLE_EMPLOYEE").build()));
         Employee employee = new Employee();

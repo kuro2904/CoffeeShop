@@ -1,5 +1,6 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.auth.login
 
+import android.util.Log
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -8,7 +9,6 @@ import com.ltdt.coffeeshop_android_native.common.Resource
 import com.ltdt.coffeeshop_android_native.data.domains.Token
 import com.ltdt.coffeeshop_android_native.data.domains.UserLogin
 import com.ltdt.coffeeshop_android_native.data.services.AuthService
-import com.ltdt.coffeeshop_android_native.data.services.JwtService
 import com.ltdt.coffeeshop_android_native.data.services.SharePreferencesService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,12 +23,11 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val authService: AuthService,
-    private val jwtService: JwtService,
     private val dataStorePref: SharePreferencesService
 ) : ViewModel() {
 
-    private var state = mutableIntStateOf(0) // 0 - Waiting; 1 - Loading; 2 - Success; 3 - Error
-    val dialogState = state
+    private var _state = mutableIntStateOf(0) // 0 - Waiting; 1 - Loading; 2 - Success; 3 - Error
+    val state = _state
 
     private val errorState = mutableStateOf("")
     val error = errorState
@@ -41,24 +40,24 @@ class LoginViewModel @Inject constructor(
             loginFlow(email, password).collectLatest {
                 when (it) {
                     is Resource.Success -> {
-                        state.intValue = 2
+                        _state.intValue = 2
                         emailState.value = ""
                         passwordState.value = ""
                         it.data?.let { token ->
-                            dataStorePref.saveStringKey("token",token.token)
-                            dataStorePref.saveStringKey(
-                                "userId",
-                                jwtService.getUserId(token)
+                            dataStorePref.saveStringKey("token", token.token)
+                            Log.e(
+                                "Token Preferences",
+                                dataStorePref.getStringKey("token").toString()
                             )
                         }
                     }
 
                     is Resource.Loading -> {
-                        state.intValue = 1
+                        _state.intValue = 1
                     }
 
                     is Resource.Error -> {
-                        state.intValue = 3
+                        _state.intValue = 3
                         error.value = it.message ?: "An unexpected error"
                     }
                 }

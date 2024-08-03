@@ -18,6 +18,11 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".PaymentActivity"
+            android:exported="false"
+            android:label="@string/title_activity_payment"
+            android:theme="@style/Theme.CoffeeShopAndroidNative" />
+        <activity
             android:name=".AuthActivity"
             android:exported="false"
             android:label="@string/title_activity_auth"

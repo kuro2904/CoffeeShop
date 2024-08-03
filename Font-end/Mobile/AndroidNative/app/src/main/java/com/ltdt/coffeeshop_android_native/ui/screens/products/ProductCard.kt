@@ -102,7 +102,7 @@ fun ProductCard(
                         iconSize = 16,
                     )
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = onClick,
                         modifier = Modifier
                             .wrapContentSize()
                     ) {

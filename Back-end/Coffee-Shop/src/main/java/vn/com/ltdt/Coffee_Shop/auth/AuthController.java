@@ -6,8 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import vn.com.ltdt.Coffee_Shop.auth.dtos.LoginRequest;
 import vn.com.ltdt.Coffee_Shop.auth.dtos.AuthResponse;
-import vn.com.ltdt.Coffee_Shop.user.dtos.CustomerDTO;
-import vn.com.ltdt.Coffee_Shop.user.dtos.EmployeeDTO;
+import vn.com.ltdt.Coffee_Shop.auth.dtos.CustomerRegisterDTO;
+import vn.com.ltdt.Coffee_Shop.auth.dtos.EmployeeRegisterDTO;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,12 +22,12 @@ public class AuthController {
     }
 
     @PostMapping("signUp/employee")
-    public ResponseEntity<AuthResponse> signUpEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return new ResponseEntity<>(new AuthResponse(authService.signupEmployee(employeeDTO)), HttpStatus.CREATED);
+    public ResponseEntity<AuthResponse> signUpEmployee(@RequestBody EmployeeRegisterDTO employeeRegisterDTO) {
+        return new ResponseEntity<>(new AuthResponse(authService.signupEmployee(employeeRegisterDTO)), HttpStatus.CREATED);
     }
 
     @PostMapping("signUp/customer")
-    public ResponseEntity<AuthResponse> signUpCustomer(@RequestBody CustomerDTO customerDTO) {
-        return new ResponseEntity<>(new AuthResponse(authService.signupCustomer(customerDTO)), HttpStatus.CREATED);
+    public ResponseEntity<AuthResponse> signUpCustomer(@RequestBody CustomerRegisterDTO customerRegisterDTO) {
+        return new ResponseEntity<>(new AuthResponse(authService.signupCustomer(customerRegisterDTO)), HttpStatus.CREATED);
     }
 }

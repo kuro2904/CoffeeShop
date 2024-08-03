@@ -1,5 +1,7 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.products
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,22 +14,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledIconToggleButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.OutlinedIconToggleButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -41,6 +43,7 @@ import com.ltdt.coffeeshop_android_native.common.Constants.API_HOST
 import com.ltdt.coffeeshop_android_native.ui.components.BoxIcon
 import com.ltdt.coffeeshop_android_native.ui.components.BoxText
 import com.ltdt.coffeeshop_android_native.ui.components.IconTextComponent
+import com.ltdt.coffeeshop_android_native.ui.navigations.Screen
 import com.ltdt.coffeeshop_android_native.ui.theme.Grayish
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
@@ -48,10 +51,9 @@ import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductDetailScreen(
-    modifier: Modifier = Modifier,
-    productId: Int?,
     viewModel: ProductDetailViewModel = hiltViewModel(),
-    navController: NavController
+    navController: NavController,
+    context: Context = LocalContext.current
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         val pagerState =
@@ -188,12 +190,18 @@ fun ProductDetailScreen(
                         modifier = Modifier.fillMaxWidth(),
                     ) {
                         item {
-                            viewModel.productState.value.product?.details?.forEach {
-                                OutlinedIconToggleButton(
-                                    checked = true,
-                                    onCheckedChange = { },
+                            viewModel.productState.value.product?.details?.forEach { prodDetail ->
+                                FilledIconToggleButton(
+                                    checked = viewModel.selectedDetailState.value?.id == prodDetail.id,
+                                    onCheckedChange = {
+                                        if (prodDetail.id == viewModel.selectedDetailState.value?.id) {
+                                            viewModel.setSelectedDetail(null)
+                                        } else {
+                                            viewModel.setSelectedDetail(prodDetail)
+                                        }
+                                    },
                                     shape = RoundedCornerShape(percent = 20),
-                                    colors = IconButtonDefaults.outlinedIconToggleButtonColors(
+                                    colors = IconButtonDefaults.filledIconToggleButtonColors(
                                         contentColor = Grayish,
                                         checkedContainerColor = Primary,
                                         checkedContentColor = Color.White,
@@ -204,7 +212,7 @@ fun ProductDetailScreen(
                                 ) {
                                     Text(
                                         modifier = Modifier.padding(10.dp),
-                                        text = it.size,
+                                        text = prodDetail.size,
                                         fontSize = 12.sp,
                                         color = Color.White,
                                         textAlign = TextAlign.Center
@@ -223,7 +231,6 @@ fun ProductDetailScreen(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Column(
-                            modifier = Modifier.weight(0.4f),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             Text(
@@ -240,8 +247,21 @@ fun ProductDetailScreen(
                             )
                         }
                         Button(
-                            onClick = { /*TODO*/ },
-                            modifier = Modifier.weight(0.6f),
+                            modifier = Modifier.width(250.dp),
+                            onClick = {
+                                val status = viewModel.addToCart()
+                                if (status) {
+                                    navController.navigate(Screen.CartScreen.route)
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Add to cart unsuccessfully",
+                                        Toast.LENGTH_SHORT
+                                    )
+                                        .show()
+                                }
+
+                            },
                             shape = RoundedCornerShape(percent = 20),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Primary,
@@ -258,9 +278,3 @@ fun ProductDetailScreen(
         }
     }
 }
-
-//@Preview
-//@Composable
-//fun ProductDetailScreenPrev() {
-//    ProductDetailScreen()
-//}

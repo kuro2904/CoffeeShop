@@ -34,14 +34,12 @@ class AuthActivity : ComponentActivity() {
                     ) {
                         composable(route = Screen.LoginScreen.route) {
                             LoginScreen(
-                                context = this@AuthActivity,
                                 modifier = Modifier.padding(innerPadding),
                                 navController = navController
-                                )
+                            )
                         }
                         composable(route = Screen.RegisterScreen.route) {
                             RegisterScreen(
-                                context = this@AuthActivity,
                                 modifier = Modifier.padding(innerPadding),
                                 navController = navController
                             )

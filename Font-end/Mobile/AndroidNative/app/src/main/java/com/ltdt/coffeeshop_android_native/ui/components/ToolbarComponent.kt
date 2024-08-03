@@ -20,30 +20,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import com.ltdt.coffeeshop_android_native.R
+import com.ltdt.coffeeshop_android_native.common.Constants.API_HOST
+import com.ltdt.coffeeshop_android_native.data.domains.User
+import com.ltdt.coffeeshop_android_native.ui.theme.Grayish
 import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
 
 @Composable
 fun ToolBarComponent(
     modifier: Modifier = Modifier,
-    leftIcon: ImageVector,
+    leftIcon: Painter,
     rightIcon: ImageVector,
-    title: String = "", // Added a title parameter
-    onLeftIconClick: () -> Unit = {}, // Added click handlers
+    user: User?,
+    title: String = "",
+    onLeftIconClick: () -> Unit = {},
     onRightIconClick: () -> Unit = {}
 ) {
     Row(
         modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp), // Added padding
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically // Vertically center content
+        verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
             onClick = onLeftIconClick,
@@ -57,15 +66,15 @@ fun ToolBarComponent(
                     .border(
                         width = 1.dp,
                         brush = Brush.linearGradient(
-                            colors = listOf(Color.White, Color.White)
+                            colors = listOf(Grayish, Grayish)
                         ),
                         shape = RoundedCornerShape(percent = 20)
                     )
             ) {
                 Icon(
-                    imageVector = leftIcon,
+                    painter = leftIcon,
                     contentDescription = "Add",
-                    tint = Color.White,
+                    tint = Grayish,
                     modifier = Modifier
                         .size(20.dp)
                         .align(Alignment.Center)
@@ -99,14 +108,24 @@ fun ToolBarComponent(
                         shape = RoundedCornerShape(percent = 20)
                     )
             ) {
-                Icon(
-                    imageVector = rightIcon,
-                    contentDescription = "Add",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .align(Alignment.Center)
-                )
+                if (user?.avatarUrl == null) {
+                    Icon(
+                        imageVector = rightIcon,
+                        contentDescription = "Add",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .align(Alignment.Center)
+                    )
+                } else {
+                    AsyncImage(
+                        model = "http://$API_HOST:8080/api/v1/images/${user.avatarUrl}",
+                        contentDescription = "user avatar",
+                        contentScale = ContentScale.Fit,
+                        alignment = Alignment.Center,
+                        modifier = Modifier
+                    )
+                }
             }
         }
     }
@@ -116,9 +135,10 @@ fun ToolBarComponent(
 @Composable
 fun ToolBarComponentPrev() {
     ToolBarComponent(
-        leftIcon = Icons.Outlined.Home,
+        leftIcon = painterResource(id = R.drawable.view_cozy),
         rightIcon = Icons.Outlined.Home,
-        title = "Home"
+        title = "Home",
+        user = null
     )
 }
 

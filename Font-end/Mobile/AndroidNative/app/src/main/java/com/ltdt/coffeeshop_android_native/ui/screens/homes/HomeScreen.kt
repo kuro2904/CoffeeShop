@@ -1,7 +1,5 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.homes
 
-import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,7 +16,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ScrollableTabRow
@@ -35,14 +32,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.ltdt.coffeeshop_android_native.AuthActivity
 import com.ltdt.coffeeshop_android_native.data.domains.Product
-import com.ltdt.coffeeshop_android_native.ui.screens.products.ProductCard
-import com.ltdt.coffeeshop_android_native.ui.components.ToolBarComponent
 import com.ltdt.coffeeshop_android_native.ui.navigations.Screen
+import com.ltdt.coffeeshop_android_native.ui.screens.products.ProductCard
 import com.ltdt.coffeeshop_android_native.ui.theme.Gray
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
@@ -51,25 +45,15 @@ import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
 fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel(),
-    context: Context
 ) {
+
     LazyColumn(
         modifier = Modifier
             .padding(horizontal = 10.dp)
             .padding(top = 10.dp)
     ) {
         item {
-            ToolBarComponent(
-                leftIcon = Icons.Outlined.Home,
-                rightIcon = Icons.Outlined.Home,
-                onRightIconClick = {
-                    startActivity(
-                        context,
-                        Intent(context, AuthActivity::class.java),
-                        null
-                    )
-                })
-            Spacer(modifier = Modifier.height(10.dp))
+
             Text(
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Left,
@@ -160,7 +144,8 @@ fun HomeScreen(
             ) {
                 items(
                     viewModel.productsState.value.products,
-                    key = { item -> item.id }) { item: Product ->
+                    key = { item -> item.id }
+                ) { item: Product ->
                     ProductCard(
                         modifier = Modifier.padding(horizontal = 10.dp),
                         product = item,

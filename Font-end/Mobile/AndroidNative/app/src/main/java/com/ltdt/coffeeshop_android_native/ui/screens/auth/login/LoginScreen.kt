@@ -1,6 +1,8 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.auth.login
 
 import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,15 +31,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -54,8 +55,15 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
     viewModel: LoginViewModel = hiltViewModel(),
-    context: Activity
+    context: Context = LocalContext.current
 ) {
+    LaunchedEffect(viewModel.state.intValue) {
+        if (viewModel.state.intValue == 2) {
+            Toast.makeText(context, "Login successfully", Toast.LENGTH_SHORT).show()
+            (context as? Activity)?.finish()
+        }
+    }
+
 
     Box(modifier = modifier.fillMaxSize()) {
 
@@ -66,7 +74,7 @@ fun LoginScreen(
             alignment = Alignment.TopCenter,
         )
         IconButton(
-            onClick = { context.finish() },
+            onClick = { (context as? Activity)?.finish() },
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(10.dp),
@@ -87,7 +95,6 @@ fun LoginScreen(
                 topStartPercent = 5,
                 topEndPercent = 5
             )
-
         ) {
             Box(
                 modifier = Modifier
@@ -145,13 +152,19 @@ fun LoginScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
+                    Text(
+                        text = viewModel.error.value,
+                        modifier = Modifier
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
                     ElevatedButton(
                         onClick = {
                             viewModel.login(
                                 email = viewModel.emailState.value,
                                 password = viewModel.passwordState.value
                             )
-                            if(viewModel.dialogState.intValue == 2) context.finish()
                         },
                         shape = RoundedCornerShape(percent = 15),
                         modifier = Modifier.fillMaxWidth(),

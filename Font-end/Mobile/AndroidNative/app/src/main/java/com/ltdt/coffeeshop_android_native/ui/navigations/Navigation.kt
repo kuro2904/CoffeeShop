@@ -17,8 +17,7 @@ import com.ltdt.coffeeshop_android_native.ui.screens.products.ProductDetailScree
 @Composable
 fun ContentNav(
     modifier: Modifier = Modifier,
-    navController: NavHostController,
-    context: Context
+    navController: NavHostController
 ) {
     NavHost(
         modifier = modifier,
@@ -27,7 +26,7 @@ fun ContentNav(
         route = "main_screen",
     ) {
         composable(route = Screen.HomeScreen.route) {
-            HomeScreen(navController = navController, context = context)
+            HomeScreen(navController = navController)
         }
         composable(route = Screen.CartScreen.route) {
             CartScreen(navController = navController)
@@ -41,10 +40,8 @@ fun ContentNav(
         composable(
             route = Screen.ProductDetailScreen.route.plus("?productId={productId}"),
             arguments = listOf(navArgument("productId") { type = NavType.IntType })
-        ) { backStackEntry ->
-
-            val productId = backStackEntry.arguments?.getInt("productId")
-            ProductDetailScreen(navController = navController, productId = productId)
+        ) {
+            ProductDetailScreen(navController = navController)
         }
     }
 }

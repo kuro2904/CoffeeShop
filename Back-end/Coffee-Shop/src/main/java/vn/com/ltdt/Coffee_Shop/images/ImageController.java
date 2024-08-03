@@ -28,4 +28,5 @@ public class ImageController {
     public ResponseEntity<List<String>> uploadImage(@RequestParam("files") List<MultipartFile> files) throws IOException {
         return ResponseEntity.ok(imageService.uploadImage(files));
     }
+
 }
