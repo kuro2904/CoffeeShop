@@ -38,7 +38,7 @@ class CartViewModel @Inject constructor(
         _cartItems.value = updatedItems
     }
 
-    fun getTotalPrice(): Float {
+    fun getTotalPrice(): Double {
         return cartRepository.getTotalPrice()
     }
 

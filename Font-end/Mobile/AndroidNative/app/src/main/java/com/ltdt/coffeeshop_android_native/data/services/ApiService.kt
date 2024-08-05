@@ -1,6 +1,7 @@
 package com.ltdt.coffeeshop_android_native.data.services
 
 import com.ltdt.coffeeshop_android_native.data.domains.Category
+import com.ltdt.coffeeshop_android_native.data.domains.Order
 import com.ltdt.coffeeshop_android_native.data.domains.Product
 import com.ltdt.coffeeshop_android_native.data.domains.Token
 import com.ltdt.coffeeshop_android_native.data.domains.User
@@ -8,6 +9,7 @@ import com.ltdt.coffeeshop_android_native.data.domains.UserLogin
 import com.ltdt.coffeeshop_android_native.data.domains.UserRegister
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -34,6 +36,12 @@ interface ApiService {
 
     @GET("categories")
     suspend fun getAllCategories(): List<Category>
+
+    @POST("orders/create")
+    suspend fun placeOrder(@Body order: Order, @Header("Authorization") token: String): Order
+
+    @GET("orders/{userId}")
+    suspend fun getUserOrders(@Path("userId") userId: String): List<Order>
 
 
 }

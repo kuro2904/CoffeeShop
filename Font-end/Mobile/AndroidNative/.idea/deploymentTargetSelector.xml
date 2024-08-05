@@ -16,6 +16,9 @@
       <SelectionState runConfigName="Mobile.AndroidNative.CoffeeShop-Android-Native.app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
+      <SelectionState runConfigName="Font-end.Mobile.AndroidNative.CoffeeShop-Android-Native.app">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
     </selectionStates>
   </component>
 </project>

@@ -22,7 +22,7 @@ import com.ltdt.coffeeshop_android_native.data.domains.ProductDetail
 import com.ltdt.coffeeshop_android_native.ui.components.IconTextComponent
 
 @Composable
-fun ProductImage(modifier: Modifier = Modifier, product: Product? = null, isShowRating: Boolean) {
+fun ProductImage(modifier: Modifier = Modifier, product: Product?, isShowRating: Boolean) {
     Box(
         modifier = modifier
             .wrapContentSize()
@@ -82,5 +82,5 @@ fun ProductImagePrev() {
         details = details,
         images = images
     )
-    ProductImage(isShowRating = true)
+    ProductImage(isShowRating = true, product = null)
 }

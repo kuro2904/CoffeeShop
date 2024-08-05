@@ -144,7 +144,7 @@ fun HomeScreen(
             ) {
                 items(
                     viewModel.productsState.value.products,
-                    key = { item -> item.id }
+                    key = { it.id }
                 ) { item: Product ->
                     ProductCard(
                         modifier = Modifier.padding(horizontal = 10.dp),

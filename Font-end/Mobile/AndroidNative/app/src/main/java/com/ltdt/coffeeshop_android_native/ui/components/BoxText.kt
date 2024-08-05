@@ -21,12 +21,13 @@ fun BoxText(
     modifier: Modifier = Modifier,
     text: String,
     textSize: Int,
-    textColor: Color = Grayish
+    textColor: Color = Grayish,
+    backgroundColor: Color = Tertiary
 ) {
     Box(
         modifier
             .height(44.dp)
-            .background(color = Tertiary, shape = RoundedCornerShape(percent = 20)),
+            .background(color = backgroundColor, shape = RoundedCornerShape(percent = 20)),
         contentAlignment = Alignment.Center
     ) {
         Text(

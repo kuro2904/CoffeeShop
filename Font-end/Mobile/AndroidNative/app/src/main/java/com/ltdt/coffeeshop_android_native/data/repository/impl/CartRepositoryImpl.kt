@@ -46,7 +46,7 @@ class CartRepositoryImpl : CartRepository {
         return cartItems
     }
 
-    override fun getTotalPrice(): Float {
-        return cartItems.sumOf { it.price }.toFloat()
+    override fun getTotalPrice(): Double {
+        return cartItems.sumOf { it.price }
     }
 }

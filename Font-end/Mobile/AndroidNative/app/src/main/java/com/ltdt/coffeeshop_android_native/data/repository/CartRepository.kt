@@ -14,5 +14,5 @@ interface CartRepository {
     fun updateQuantity(orderDetail: OrderDetail, quantity: Int)
     fun removeFromCart(orderDetail: OrderDetail)
     fun getCartItems(): List<OrderDetail>
-    fun getTotalPrice(): Float
+    fun getTotalPrice(): Double
 }

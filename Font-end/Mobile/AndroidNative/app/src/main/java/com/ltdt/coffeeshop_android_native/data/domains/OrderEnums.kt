@@ -7,3 +7,7 @@ enum class DeliveryType {
 enum class PaymentType {
     COD, MOMO, VNPAY
 }
+
+enum class OrderStatus {
+    WAITING, CONFIRMED, CANCELLED, SHIPPED
+}

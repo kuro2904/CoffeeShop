@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +28,13 @@ fun ModalOrderTime(
     timeOrder: String,
     onTimeClick: () -> Unit,
 ) {
-    Column(modifier = modifier.fillMaxWidth()) {
+
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()

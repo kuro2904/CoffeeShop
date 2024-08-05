@@ -1,5 +1,6 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.payments
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -34,32 +35,45 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import com.google.gson.Gson
+import com.ltdt.coffeeshop_android_native.data.domains.Order
+import com.ltdt.coffeeshop_android_native.data.domains.OrderStatus
+import com.ltdt.coffeeshop_android_native.ui.components.DatePicker
+import com.ltdt.coffeeshop_android_native.ui.components.TimePicker
+import com.ltdt.coffeeshop_android_native.ui.navigations.Screen
 import com.ltdt.coffeeshop_android_native.ui.screens.payments.components.ModalDeliveryUserInfo
+import com.ltdt.coffeeshop_android_native.ui.screens.payments.components.ModalOrderTime
 import com.ltdt.coffeeshop_android_native.ui.screens.payments.components.ModalPaymentMethod
+import com.ltdt.coffeeshop_android_native.ui.screens.payments.components.ModalUserAddressInfo
 import com.ltdt.coffeeshop_android_native.ui.screens.payments.components.OrderReviewCard
 import com.ltdt.coffeeshop_android_native.ui.screens.payments.components.UserDeliveryInfoCard
-import com.ltdt.coffeeshop_android_native.ui.theme.CoffeeShopAndroidNativeTheme
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 import com.ltdt.coffeeshop_android_native.ui.theme.Secondary
+import java.time.ZoneOffset
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(
     modifier: Modifier = Modifier,
-    viewModel: PaymentViewModel = hiltViewModel()
+    navController: NavController,
+    viewModel: PaymentViewModel = hiltViewModel(),
 ) {
     val deliveryType by viewModel.deliveryType
     val note by viewModel.note
     val state by viewModel.state
     val user by viewModel.user
     val orders by viewModel.orders
+    val orderDate by viewModel.orderDate
     val paymentMethod by viewModel.paymentMethod
     val showBottomSheet by viewModel.modalSheetState
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val timePickerState by viewModel.timePickerState
+    val datePickerState by viewModel.datePickerState
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -85,7 +99,9 @@ fun PaymentScreen(
                             user = user,
                             onClickChangeUserInfo = { viewModel.openModalState(2) },
                             onClickChangeAddress = { viewModel.openModalState(1) },
-                            onClickChangeTime = { viewModel.openModalState(3) }
+                            onClickChangeTime = { viewModel.openModalState(3) },
+                            orderDate = orderDate.dayOfWeek.name,
+                            orderTime = orderDate.hour.toString() + ":" + orderDate.minute.toString()
                         )
                     }
                     item {
@@ -154,7 +170,9 @@ fun PaymentScreen(
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(bottom = 10.dp),
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        navController.navigate("${Screen.OrderReviewScreen.route}/${viewModel.getOrderString()}")
+                    },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Primary,
                         contentColor = Color.White,
@@ -172,7 +190,10 @@ fun PaymentScreen(
                 sheetState = sheetState,
             ) {
                 when (showBottomSheet.action) {
-                    1 -> Text(text = "Address Change")
+                    1 -> {
+                        ModalUserAddressInfo(userAddress = user?.address)
+                    }
+
                     2 -> {
                         var userTemp by remember { mutableStateOf(user) }
                         ModalDeliveryUserInfo(
@@ -191,7 +212,45 @@ fun PaymentScreen(
                     }
 
                     3 -> {
-                        //Todo: Modal Order Time
+                        ModalOrderTime(
+                            dateOrder = orderDate.dayOfWeek.name,
+                            onDateClick = { viewModel.openDatePicker() },
+                            timeOrder = orderDate.hour.toString() + ":" + orderDate.minute.toString(),
+                            onTimeClick = {
+                                viewModel.changeTimePickerState()
+                            }
+                        )
+
+                        if (timePickerState) {
+                            TimePicker(
+                                onConfirm = { timePickerState ->
+                                    viewModel.setOrderTime(
+                                        timePickerState.hour,
+                                        timePickerState.minute
+                                    )
+                                    viewModel.changeTimePickerState()
+                                },
+                                onDismiss = {
+                                    viewModel.changeTimePickerState()
+                                },
+                                currentTime = orderDate
+                            )
+                        }
+
+                        if (datePickerState) {
+                            DatePicker(
+                                onDateSelected = {
+                                    viewModel.setOrderDate(it)
+                                    viewModel.closeDatePicker()
+
+                                },
+                                currentDate = orderDate.atZone(ZoneOffset.UTC).toInstant()
+                                    .toEpochMilli(),
+                                onDismiss = {
+                                    viewModel.closeDatePicker()
+                                }
+                            )
+                        }
                     }
 
                     4 -> {
@@ -203,14 +262,5 @@ fun PaymentScreen(
                 }
             }
         }
-    }
-}
-
-
-@Preview
-@Composable
-private fun PaymentScreenPrev() {
-    CoffeeShopAndroidNativeTheme {
-        PaymentScreen()
     }
 }

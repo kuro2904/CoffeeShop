@@ -46,7 +46,9 @@ fun UserDeliveryInfoCard(
     user: User? = null,
     onClickChangeUserInfo: () -> Unit,
     onClickChangeAddress: () -> Unit,
-    onClickChangeTime: () -> Unit
+    onClickChangeTime: () -> Unit,
+    orderDate: String,
+    orderTime: String,
 ) {
     Box(modifier = Modifier) {
         if (deliveryType == DeliveryType.DELIVERY) {
@@ -57,7 +59,9 @@ fun UserDeliveryInfoCard(
                 user = user,
                 onClickChangeUserInfo = onClickChangeUserInfo,
                 onClickChangeAddress = onClickChangeAddress,
-                onClickChangeTime = onClickChangeTime
+                onClickChangeTime = onClickChangeTime,
+                orderTime = orderTime,
+                orderDate = orderDate,
             )
         } else {
             TakeAwayInfoCard(changeDeliType = changeDeliType, onClickChangeTime = onClickChangeTime)
@@ -71,9 +75,11 @@ fun DeliveryInfoCard(
     note: String = "",
     onNoteChange: (String) -> Unit,
     user: User?,
+    orderDate: String,
+    orderTime: String,
     onClickChangeUserInfo: () -> Unit,
     onClickChangeAddress: () -> Unit,
-    onClickChangeTime: () -> Unit
+    onClickChangeTime: () -> Unit,
 ) {
     Column(modifier = Modifier) {
         Row(
@@ -108,7 +114,7 @@ fun DeliveryInfoCard(
         ) {
             Column {
                 Text(text = "Home", color = Color.White)
-                Text(text = "123 street", color = Grayish)
+                Text(text = user?.address ?: "Unknown", color = Grayish)
             }
             Icon(
                 imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
@@ -160,8 +166,8 @@ fun DeliveryInfoCard(
                 .weight(0.5f)
                 .clickable { onClickChangeTime() }) {
                 Column {
-                    Text(text = "asd", color = Color.White)
-                    Text(text = "asd", color = Grayish)
+                    Text(text = orderDate, color = Color.White)
+                    Text(text = orderTime, color = Grayish)
                     Spacer(modifier = Modifier.height(10.dp))
                     HorizontalDivider(
                         color = Grayish,
@@ -201,7 +207,7 @@ fun TakeAwayInfoCard(changeDeliType: () -> Unit, onClickChangeTime: () -> Unit) 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onClickChangeTime() },
+                .clickable { },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -225,7 +231,7 @@ fun TakeAwayInfoCard(changeDeliType: () -> Unit, onClickChangeTime: () -> Unit) 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { },
+                .clickable { onClickChangeTime() },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -252,7 +258,9 @@ private fun DeliveryInfoCardPrev() {
             user = null,
             onClickChangeUserInfo = {},
             onClickChangeAddress = {},
-            onClickChangeTime = {}
+            onClickChangeTime = {},
+            orderDate = "asd",
+            orderTime = "asdds"
         )
     }
 }

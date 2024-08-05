@@ -25,7 +25,6 @@ import com.ltdt.coffeeshop_android_native.ui.screens.carts.components.OrderDetai
 @Composable
 fun CartScreen(
     modifier: Modifier = Modifier,
-    navController: NavController,
     viewModel: CartViewModel = hiltViewModel(),
     context: Context = LocalContext.current
 ) {

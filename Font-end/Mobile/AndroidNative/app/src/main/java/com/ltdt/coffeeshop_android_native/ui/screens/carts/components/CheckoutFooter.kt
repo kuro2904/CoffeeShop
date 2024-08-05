@@ -26,7 +26,7 @@ import com.ltdt.coffeeshop_android_native.ui.theme.Grayish
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 
 @Composable
-fun CheckoutFooter(modifier: Modifier = Modifier, price: Float, placeOrder: () -> Unit) {
+fun CheckoutFooter(modifier: Modifier = Modifier, price: Double, placeOrder: () -> Unit) {
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -66,6 +66,6 @@ fun CheckoutFooter(modifier: Modifier = Modifier, price: Float, placeOrder: () -
 @Composable
 private fun CheckoutFooterPrev() {
     CoffeeShopAndroidNativeTheme {
-        CheckoutFooter(price = 4.5f, placeOrder = {})
+        CheckoutFooter(price = 4.5, placeOrder = {})
     }
 }

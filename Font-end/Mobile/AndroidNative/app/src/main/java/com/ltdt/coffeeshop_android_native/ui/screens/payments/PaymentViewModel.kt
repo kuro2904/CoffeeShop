@@ -5,9 +5,12 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.Gson
 import com.ltdt.coffeeshop_android_native.R
 import com.ltdt.coffeeshop_android_native.common.Resource
 import com.ltdt.coffeeshop_android_native.data.domains.DeliveryType
+import com.ltdt.coffeeshop_android_native.data.domains.Order
+import com.ltdt.coffeeshop_android_native.data.domains.OrderStatus
 import com.ltdt.coffeeshop_android_native.data.domains.PaymentType
 import com.ltdt.coffeeshop_android_native.data.domains.User
 import com.ltdt.coffeeshop_android_native.data.repository.CartRepository
@@ -20,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import java.time.ZoneOffset
 import javax.inject.Inject
 
 
@@ -28,7 +32,8 @@ class PaymentViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val userRepository: UserRepository,
     private val sharePreferencesService: SharePreferencesService,
-    private val jwtService: JwtService
+    private val jwtService: JwtService,
+    private val gson: Gson
 ) : ViewModel() {
 
     val paymentMethodList = listOf(
@@ -58,8 +63,15 @@ class PaymentViewModel @Inject constructor(
     private var _modalSheetState = mutableStateOf(ModalState())
     val modalSheetState: State<ModalState> = _modalSheetState
 
+    private var _timePickerState = mutableStateOf(false)
+    val timePickerState: State<Boolean> = _timePickerState
+
+    private var _datePickerState = mutableStateOf(false)
+    val datePickerState: State<Boolean> = _datePickerState
+
     private var _orderDate = mutableStateOf(LocalDateTime.now().plusMinutes(30))
     val orderDate: State<LocalDateTime> = _orderDate
+
 
     init {
         getUser()
@@ -102,7 +114,7 @@ class PaymentViewModel @Inject constructor(
         }
     }
 
-    fun getTotalPrice(): Float {
+    fun getTotalPrice(): Double {
         return cartRepository.getTotalPrice()
     }
 
@@ -140,6 +152,46 @@ class PaymentViewModel @Inject constructor(
     fun changeUserInfo(name: String, phoneNumber: String) {
         _user.value = _user.value?.copy(name = name)
         _user.value = _user.value?.copy(phoneNumber = phoneNumber)
+    }
+
+    fun changeTimePickerState() {
+        _timePickerState.value = !_timePickerState.value
+    }
+
+    fun setOrderTime(hour: Int, minute: Int) {
+        _orderDate.value = _orderDate.value.withHour(hour)
+        _orderDate.value = _orderDate.value.withMinute(minute)
+    }
+
+    fun setOrderDate(date: Long?) {
+        if (date != null) {
+            _orderDate.value = LocalDateTime.ofEpochSecond(date / 1000, 0, ZoneOffset.UTC)
+        }
+    }
+
+    fun openDatePicker() {
+        _datePickerState.value = true
+    }
+
+    fun closeDatePicker() {
+        _datePickerState.value = false
+    }
+
+    fun getOrderString(): String {
+        val order = Order(
+            paymentMethod = paymentMethod.value,
+            amount = getTotalPrice(),
+            note = note.value,
+            orderDate = orderDate.value,
+            deliveryType = deliveryType.value,
+            address = user.value?.address ?: "",
+            details = orders.value,
+            customerId = user.value?.id ?: "",
+            status = OrderStatus.WAITING,
+            receivePerson = user.value?.name ?: "",
+            receivePhoneNumber = user.value?.phoneNumber ?: ""
+        )
+        return gson.toJson(order)
     }
 
 }

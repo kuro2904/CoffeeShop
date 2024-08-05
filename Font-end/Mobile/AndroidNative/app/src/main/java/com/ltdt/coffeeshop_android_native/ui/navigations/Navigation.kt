@@ -1,6 +1,5 @@
 package com.ltdt.coffeeshop_android_native.ui.navigations
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -29,13 +28,13 @@ fun ContentNav(
             HomeScreen(navController = navController)
         }
         composable(route = Screen.CartScreen.route) {
-            CartScreen(navController = navController)
+            CartScreen()
         }
         composable(route = Screen.FavoriteScreen.route) {
             FavoriteScreen(navController = navController)
         }
         composable(route = Screen.OrderScreen.route) {
-            OrderHistoryScreen(navController = navController)
+            OrderHistoryScreen()
         }
         composable(
             route = Screen.ProductDetailScreen.route.plus("?productId={productId}"),

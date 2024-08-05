@@ -3,6 +3,7 @@ package vn.com.ltdt.Coffee_Shop.order;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import vn.com.ltdt.Coffee_Shop.product.Product;
@@ -12,6 +13,7 @@ import vn.com.ltdt.Coffee_Shop.product.ProductDetail;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "t_order_detail")
 public class OrderDetail {
     @Id

@@ -90,7 +90,4 @@ dependencies {
     // Preference Datastore
     implementation(libs.datastore.preferences)
 
-//    // Room Database
-//    implementation(libs.androidx.room.runtime)
-//    kapt(libs.androidx.room.compiler)
 }
