@@ -15,4 +15,5 @@ interface CartRepository {
     fun removeFromCart(orderDetail: OrderDetail)
     fun getCartItems(): List<OrderDetail>
     fun getTotalPrice(): Double
+    fun clearCart()
 }

@@ -32,6 +32,7 @@ public class Order {
     private double amount;
     private String note;
     private LocalDateTime orderDate;
+    @Enumerated(EnumType.STRING)
     private DeliveryType deliveryType;
     @NotNull(message = "Address cannot be null")
     private String address;

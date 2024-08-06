@@ -30,7 +30,7 @@ public class ProductMapper {
         );
     }
 
-    private ProductDetailDTO mapToDetailDTO(ProductDetail detail) {
+    public ProductDetailDTO mapToDetailDTO(ProductDetail detail) {
         return new ProductDetailDTO(
                 detail.getId(),
                 detail.getProduct().getId(),

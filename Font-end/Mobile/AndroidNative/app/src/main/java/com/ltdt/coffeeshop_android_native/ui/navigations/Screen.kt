@@ -6,7 +6,7 @@ sealed class Screen(
 
     data object HomeScreen : Screen("home_screen")
     data object CartScreen : Screen("cart_screen")
-    data object OrderScreen : Screen("order_screen")
+    data object OrderHistoryScreen : Screen("order_history_screen")
     data object PaymentScreen : Screen("payment_screen")
     data object FavoriteScreen : Screen("favorite_screen")
     data object ProductDetailScreen : Screen("product_detail_screen")

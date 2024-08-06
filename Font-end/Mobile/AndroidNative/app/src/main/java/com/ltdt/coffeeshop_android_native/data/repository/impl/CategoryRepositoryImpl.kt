@@ -1,16 +1,17 @@
 package com.ltdt.coffeeshop_android_native.data.repository.impl
 
 import com.ltdt.coffeeshop_android_native.data.domains.Category
+import com.ltdt.coffeeshop_android_native.data.remote.CategoryDTO
 import com.ltdt.coffeeshop_android_native.data.repository.CategoryRepository
 import com.ltdt.coffeeshop_android_native.data.services.ApiService
 import javax.inject.Inject
 
 class CategoryRepositoryImpl @Inject constructor(
     private val apiService: ApiService
-): CategoryRepository {
+) : CategoryRepository {
 
 
-    override suspend fun getAll(): List<Category> {
+    override suspend fun getAll(): List<CategoryDTO> {
         return apiService.getAllCategories()
     }
 

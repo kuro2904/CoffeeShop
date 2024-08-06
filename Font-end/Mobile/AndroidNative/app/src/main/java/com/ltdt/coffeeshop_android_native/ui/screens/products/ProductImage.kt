@@ -12,13 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ltdt.coffeeshop_android_native.R
 import com.ltdt.coffeeshop_android_native.common.Constants.API_HOST
 import com.ltdt.coffeeshop_android_native.data.domains.Product
-import com.ltdt.coffeeshop_android_native.data.domains.ProductDetail
 import com.ltdt.coffeeshop_android_native.ui.components.IconTextComponent
 
 @Composable
@@ -64,23 +62,4 @@ fun ProductImage(modifier: Modifier = Modifier, product: Product?, isShowRating:
             )
         }
     }
-}
-
-
-@Preview
-@Composable
-fun ProductImagePrev() {
-    val details: List<ProductDetail> = listOf(ProductDetail(1, 0, "M", 4.5))
-    val images: List<String> = listOf("aAA", "ddd")
-    val product = Product(
-        0,
-        "test",
-        1,
-        "Description Test",
-        "Cate 1",
-        true,
-        details = details,
-        images = images
-    )
-    ProductImage(isShowRating = true, product = null)
 }

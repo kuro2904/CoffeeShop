@@ -37,6 +37,7 @@ import com.ltdt.coffeeshop_android_native.AuthActivity
 import com.ltdt.coffeeshop_android_native.R
 import com.ltdt.coffeeshop_android_native.ui.components.ToolBarComponent
 import com.ltdt.coffeeshop_android_native.ui.navigations.ContentNav
+import com.ltdt.coffeeshop_android_native.ui.navigations.Screen
 import com.ltdt.coffeeshop_android_native.ui.theme.Gray
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 import com.ltdt.coffeeshop_android_native.ui.theme.Secondary
@@ -54,31 +55,31 @@ fun MainScreen(
 
     val items = listOf(
         BottomNavigationItem(
-            routeName = "home_screen",
+            routeName = Screen.HomeScreen.route,
             selectIcon = Icons.Filled.Home,
             unselectIcon = Icons.Outlined.Home,
             hasNews = false,
             title = "Home"
         ),
         BottomNavigationItem(
-            routeName = "cart_screen",
+            routeName = Screen.CartScreen.route,
             selectIcon = Icons.Filled.ShoppingCart,
             unselectIcon = Icons.Outlined.ShoppingCart,
             hasNews = false,
             title = "Cart"
         ),
         BottomNavigationItem(
-            routeName = "favorite_screen",
+            routeName = Screen.FavoriteScreen.route,
             selectIcon = Icons.Filled.Favorite,
             unselectIcon = Icons.Outlined.Favorite,
             hasNews = false,
             title = "Favorite"
         ),
         BottomNavigationItem(
-            routeName = "order_screen",
+            routeName = Screen.OrderHistoryScreen.route,
             selectIcon = Icons.Filled.Notifications,
             unselectIcon = Icons.Outlined.Notifications,
-            hasNews = true,
+            hasNews = false,
             title = "Orders"
         ),
     )

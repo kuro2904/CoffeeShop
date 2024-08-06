@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +36,12 @@ fun PaymentOverview(
     context: Context = LocalContext.current
 ) {
 
-    val order by viewModel.order
+    val state by viewModel.state
+
+    LaunchedEffect(state.state) {
+        if (state.state == 1)
+            (context as Activity).finish()
+    }
 
     Box(modifier = modifier) {
         Column {
@@ -56,7 +62,7 @@ fun PaymentOverview(
                         fontWeight = FontWeight.SemiBold
                     )
                     Text(
-                        text = " ${order?.orderDate?.hour}:${order?.orderDate?.minute} ${order?.orderDate?.dayOfMonth}/${order?.orderDate?.monthValue}/${order?.orderDate?.year}",
+                        text = " ${state.order?.orderDate?.hour}:${state.order?.orderDate?.minute} ${state.order?.orderDate?.dayOfMonth}/${state.order?.orderDate?.monthValue}/${state.order?.orderDate?.year}",
                         fontSize = 16.sp,
                         color = Color.White
                     )
@@ -71,20 +77,19 @@ fun PaymentOverview(
                         color = Color.White,
                         fontWeight = FontWeight.SemiBold
                     )
-                    Text(text = "${order?.amount} VND", fontSize = 16.sp, color = Primary)
+                    Text(text = "${state.order?.amount} VND", fontSize = 16.sp, color = Primary)
                 }
             }
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            order?.details?.groupBy { it.product }?.forEach { (product, orderDetails) ->
+            state.order?.details?.groupBy { it.product }?.forEach { (product, orderDetails) ->
                 OrderOverViewCardItem(product = product, orderDetails = orderDetails)
             }
         }
         TextButton(
             onClick = {
                 viewModel.placeOrder()
-                if (viewModel.state.intValue == 1) (context as Activity).finish()
             },
             modifier = Modifier.align(Alignment.BottomEnd),
             shape = RoundedCornerShape(20),

@@ -28,12 +28,12 @@ fun ContentNav(
             HomeScreen(navController = navController)
         }
         composable(route = Screen.CartScreen.route) {
-            CartScreen()
+            CartScreen(navController = navController)
         }
         composable(route = Screen.FavoriteScreen.route) {
             FavoriteScreen(navController = navController)
         }
-        composable(route = Screen.OrderScreen.route) {
+        composable(route = Screen.OrderHistoryScreen.route) {
             OrderHistoryScreen()
         }
         composable(

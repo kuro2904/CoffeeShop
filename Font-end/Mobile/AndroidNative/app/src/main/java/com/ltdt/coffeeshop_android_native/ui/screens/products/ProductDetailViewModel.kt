@@ -9,6 +9,7 @@ import coil.network.HttpException
 import com.ltdt.coffeeshop_android_native.common.Resource
 import com.ltdt.coffeeshop_android_native.data.domains.Product
 import com.ltdt.coffeeshop_android_native.data.domains.ProductDetail
+import com.ltdt.coffeeshop_android_native.data.remote.toEntity
 import com.ltdt.coffeeshop_android_native.data.repository.CartRepository
 import com.ltdt.coffeeshop_android_native.data.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +52,7 @@ class ProductDetailViewModel @Inject constructor(
             try {
                 emit(Resource.Loading())
                 val product = productRepository.getProductById(productId)
-                emit(Resource.Success(product))
+                emit(Resource.Success(product.toEntity()))
                 selectedDetail.value = productState.value.product?.details?.get(0)
             } catch (e: HttpException) {
                 emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))

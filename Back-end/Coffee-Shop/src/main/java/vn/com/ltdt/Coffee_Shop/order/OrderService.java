@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface OrderService {
 
-    OrderDTO createOrder(OrderDTO order);
+    Boolean createOrder(OrderDTO order);
     OrderDTO updateOrder(OrderDTO order);
-    List<OrderDTO> getAllOrders();
+    List<OrderDTO> getAllOrders(String userId);
 
 }

@@ -11,6 +11,7 @@ import coil.network.HttpException
 import com.ltdt.coffeeshop_android_native.common.Resource
 import com.ltdt.coffeeshop_android_native.data.domains.Category
 import com.ltdt.coffeeshop_android_native.data.domains.Product
+import com.ltdt.coffeeshop_android_native.data.remote.toEntity
 import com.ltdt.coffeeshop_android_native.data.repository.CategoryRepository
 import com.ltdt.coffeeshop_android_native.data.repository.ProductRepository
 import com.ltdt.coffeeshop_android_native.data.services.JwtService
@@ -62,7 +63,7 @@ class HomeViewModel @Inject constructor(
             try {
                 emit(Resource.Loading())
                 val products = productRepository.getAll()
-                emit(Resource.Success(products))
+                emit(Resource.Success(products.map { it.toEntity() }))
             } catch (e: HttpException) {
                 emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
             } catch (e: IOException) {
@@ -76,7 +77,7 @@ class HomeViewModel @Inject constructor(
             try {
                 emit(Resource.Loading())
                 val filteredProducts = productRepository.getProductsByCategory(categoryId)
-                emit(Resource.Success(filteredProducts))
+                emit(Resource.Success(filteredProducts.map { it.toEntity() }))
             } catch (e: HttpException) {
                 emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
             } catch (e: IOException) {
@@ -91,7 +92,7 @@ class HomeViewModel @Inject constructor(
             try {
                 emit(Resource.Loading())
                 val products = categoryRepository.getAll()
-                emit(Resource.Success(products))
+                emit(Resource.Success(products.map { it.toEntity() }))
             } catch (e: HttpException) {
                 emit(Resource.Error(e.localizedMessage ?: "An unexpected error"))
             } catch (e: IOException) {

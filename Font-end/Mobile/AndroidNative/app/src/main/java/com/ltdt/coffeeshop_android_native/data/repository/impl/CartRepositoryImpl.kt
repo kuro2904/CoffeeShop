@@ -49,4 +49,8 @@ class CartRepositoryImpl : CartRepository {
     override fun getTotalPrice(): Double {
         return cartItems.sumOf { it.price }
     }
+
+    override fun clearCart() {
+        cartItems.clear()
+    }
 }

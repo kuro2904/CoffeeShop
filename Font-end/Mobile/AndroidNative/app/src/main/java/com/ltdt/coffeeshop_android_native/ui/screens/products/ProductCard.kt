@@ -27,11 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ltdt.coffeeshop_android_native.R
 import com.ltdt.coffeeshop_android_native.data.domains.Product
-import com.ltdt.coffeeshop_android_native.data.domains.ProductDetail
 import com.ltdt.coffeeshop_android_native.ui.components.IconTextComponent
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
@@ -130,23 +128,4 @@ fun ProductCard(
 
     }
 
-}
-
-@Preview
-@Composable
-fun ProductCardPrev() {
-
-    val details: List<ProductDetail> = listOf(ProductDetail(1, 0, "M", 4.5))
-    val images: List<String> = listOf("aAA", "ddd")
-    val product = Product(
-        0,
-        "test",
-        1,
-        "Description Test",
-        "Cate 1",
-        true,
-        details = details,
-        images = images
-    )
-    ProductCard(product = product, onClick = {})
 }

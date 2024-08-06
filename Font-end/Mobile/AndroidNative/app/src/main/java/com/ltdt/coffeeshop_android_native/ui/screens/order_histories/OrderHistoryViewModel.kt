@@ -1,20 +1,21 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.order_histories
 
+import android.util.Log
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ltdt.coffeeshop_android_native.common.Resource
 import com.ltdt.coffeeshop_android_native.data.domains.Order
+import com.ltdt.coffeeshop_android_native.data.remote.toEntity
 import com.ltdt.coffeeshop_android_native.data.repository.OrderRepository
 import com.ltdt.coffeeshop_android_native.data.services.JwtService
 import com.ltdt.coffeeshop_android_native.data.services.SharePreferencesService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,14 +27,11 @@ class OrderHistoryViewModel @Inject constructor(
     private val jwtService: JwtService
 ) : ViewModel() {
 
-    private val _state = mutableIntStateOf(0)
-    val state: State<Int> = _state
-
-    private val _orderHistories = mutableStateOf(emptyList<Order>())
-    val orderHistories: State<List<Order>> = _orderHistories
+    private val _state = mutableStateOf(OrderHistoryState())
+    val state: State<OrderHistoryState> = _state
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val token = sharePreferencesService.getStringKey("token")
             if (token != null) {
                 getOrders(jwtService.getUserId(token))
@@ -46,7 +44,8 @@ class OrderHistoryViewModel @Inject constructor(
             emit(Resource.Loading())
             try {
                 val orders = orderRepository.getUserOrders(userId)
-                emit(Resource.Success(orders))
+                emit(Resource.Success(orders.map { it.toEntity() }))
+                Log.d("OrderHistoryViewModel", "getOrderFlow: $orders")
             } catch (e: Exception) {
                 emit(Resource.Error(e.message ?: "Unknown error"))
             }
@@ -57,18 +56,29 @@ class OrderHistoryViewModel @Inject constructor(
         getOrderFlow(userId).onEach {
             when (it) {
                 is Resource.Success -> {
-                    _orderHistories.value = (it.data ?: emptyList())
-                    _state.intValue = 1
+                    _state.value = _state.value.copy(
+                        orderHistories = it.data ?: emptyList(),
+                        isLoading = false
+                    )
                 }
 
                 is Resource.Error -> {
-                    _state.intValue = -1
+                    _state.value = _state.value.copy(
+                        error = it.message.toString(),
+                        isLoading = false
+                    )
                 }
 
                 is Resource.Loading -> {
-                    _state.intValue = 0
+                    _state.value = _state.value.copy(isLoading = true)
                 }
             }
-        }
+        }.launchIn(viewModelScope)
     }
 }
+
+data class OrderHistoryState(
+    val isLoading: Boolean = false,
+    val orderHistories: List<Order> = emptyList(),
+    val error: String = ""
+)

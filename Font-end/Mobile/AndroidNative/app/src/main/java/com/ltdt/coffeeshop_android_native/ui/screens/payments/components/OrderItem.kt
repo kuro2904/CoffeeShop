@@ -55,25 +55,5 @@ fun OrderItem(modifier: Modifier = Modifier, orderDetail: OrderDetail) {
 @Preview
 @Composable
 private fun OrderItemPrev() {
-    CoffeeShopAndroidNativeTheme {
-        val product = Product(
-            0,
-            "Test",
-            0,
-            "Des Test",
-            "DDD",
-            true,
-            details = listOf(
-                ProductDetail(0, productId = 0, size = "S", price = 5.0)
-            ),
-            images = listOf()
-        )
-        val orderDetail = OrderDetail(
-            product = product,
-            price = 0.0,
-            quantity = 0,
-            productDetail = product.details[0]
-        )
-        OrderItem(orderDetail = orderDetail)
-    }
+
 }

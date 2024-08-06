@@ -24,8 +24,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.ltdt.coffeeshop_android_native.R
 import com.ltdt.coffeeshop_android_native.data.domains.OrderDetail
-import com.ltdt.coffeeshop_android_native.data.domains.Product
-import com.ltdt.coffeeshop_android_native.data.domains.ProductDetail
 import com.ltdt.coffeeshop_android_native.ui.theme.Primary
 import com.ltdt.coffeeshop_android_native.ui.theme.Tertiary
 
@@ -89,31 +87,5 @@ fun QuantitySelector(
 @Preview
 @Composable
 private fun QuantitySelectorPreview() {
-    val product = Product(
-        0,
-        "Test",
-        0,
-        "Des Test",
-        "DDD",
-        true,
-        details = listOf(
-            ProductDetail(0, productId = 0, size = "S", price = 5.0)
-        ),
-        images = listOf()
-    )
-    val orderDetail = OrderDetail(
-        product = product,
-        price = 0.0,
-        quantity = 0,
-        productDetail = product.details[0]
-    )
-    QuantitySelector(
-        orderDetail = orderDetail,
-        onIncrease = {
-            orderDetail.quantity += 1
-        },
-        onDecrease = {
-            if (orderDetail.quantity > 1) orderDetail.quantity -= 1
-        }
-    )
+    
 }
