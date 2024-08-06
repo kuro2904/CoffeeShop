@@ -1,19 +1,36 @@
-Coffee App
 
-Back-end: Spring boot
-Database: MySQL
-Font-end: - Admin Panel: Angular 18 - Mobile (2 versions): + React-native (on developing) + Native (Jetpack compose)
+# Coffee App
 
-Libraries: O2Auth (security), nimbus (JWT handling), JPA, MySQL, Validation
+<p>
+Back-end: Spring boot <br>
+Database: MySQL <br>
+Font-end: <br> 
+Admin Panel: Angular 18
+<ul>
+  Mobile (2 versions): 
+  <li> React-native (on developing) </li> 
+  <li>Native (Jetpack compose)</li>
+</ul>
+</p>
+Libraries: <br>
+Back-end: <br>
+<ul>
+  <li>O2Auth (security)</li>
+  <li>nimbus (JWT handling)</li>
+  <li>JPA</li>
+  <li>MySQL</li>
+  <li>Validation</li>
+</ul>
 
-Font-end:
-
+Font-end: <br>
 - Native:
-  Dagger Hilt (Dependency Injection)
-  Navigation Component
-  Retrofit
-  Coil (Fetch Images)
-  Data Store
+  <ul>
+    <li>Dagger Hilt (Dependency Injection)</li>
+    <li>Navigation Component</li>
+    <li> Retrofit</li>
+    <li> Coil (Fetch Images)</li>
+    <li> Data Store</li>
+  </ul>
 
 Sign In Screen
 
