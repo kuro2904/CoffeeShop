@@ -1,6 +1,5 @@
 package com.ltdt.coffeeshop_android_native.ui.screens.payments
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,9 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.gson.Gson
-import com.ltdt.coffeeshop_android_native.data.domains.Order
-import com.ltdt.coffeeshop_android_native.data.domains.OrderStatus
 import com.ltdt.coffeeshop_android_native.ui.components.DatePicker
 import com.ltdt.coffeeshop_android_native.ui.components.TimePicker
 import com.ltdt.coffeeshop_android_native.ui.navigations.Screen

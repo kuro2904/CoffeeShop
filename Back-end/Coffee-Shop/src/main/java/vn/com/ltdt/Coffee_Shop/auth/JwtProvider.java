@@ -4,6 +4,7 @@ package vn.com.ltdt.Coffee_Shop.auth;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -17,12 +18,14 @@ import java.util.Date;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class JwtProvider {
 
     @Value("${jwt.secret}")
     private String secretKey;
 
     public String generateToken(User user) {
+        log.info("Generating JWT token: {}", user.toString());
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
         JWTClaimsSet claimSet = new JWTClaimsSet.Builder()
                 .subject(user.getEmail())

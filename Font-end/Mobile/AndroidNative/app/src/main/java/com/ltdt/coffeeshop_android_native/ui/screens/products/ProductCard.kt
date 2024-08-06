@@ -13,12 +13,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -86,41 +86,33 @@ fun ProductCard(
                 Spacer(modifier = Modifier.height(10.dp))
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 5.dp)
-                        .padding(bottom = 10.dp),
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-
                     IconTextComponent(
+                        modifier = Modifier,
                         icon = painterResource(id = R.drawable.dollar_sign),
                         text = product.details[0].price.toString(),
                         textSize = 16,
                         iconSize = 16,
                     )
-                    IconButton(
+                    FilledIconButton(
                         onClick = onClick,
                         modifier = Modifier
-                            .wrapContentSize()
+                            .size(25.dp),
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = Primary,
+                            contentColor = Color.White,
+                        ),
+                        shape = RoundedCornerShape(20)
                     ) {
-                        Box(
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_add),
+                            contentDescription = "Add",
+                            tint = Color.Black,
                             modifier = Modifier
-                                .size(30.dp)
-                                .background(
-                                    color = Primary,
-                                    shape = RoundedCornerShape(percent = 20)
-                                )
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_add),
-                                contentDescription = "Add",
-                                tint = Color.Black,
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .align(Alignment.Center)
-                            )
-                        }
+                        )
                     }
                 }
             }

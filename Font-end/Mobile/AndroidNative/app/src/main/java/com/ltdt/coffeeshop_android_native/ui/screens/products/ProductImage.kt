@@ -3,6 +3,7 @@ package com.ltdt.coffeeshop_android_native.ui.screens.products
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -36,7 +38,8 @@ fun ProductImage(modifier: Modifier = Modifier, product: Product?, isShowRating:
             AsyncImage(
                 model = "http://$API_HOST:8080/api/v1/images/${product.images[0]}",
                 contentDescription = "Product Image",
-                modifier = Modifier.size(125.dp)
+                contentScale = ContentScale.Fit,
+                alignment = Alignment.Center,
             )
         else
             Image(

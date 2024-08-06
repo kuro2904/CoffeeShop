@@ -8,19 +8,19 @@ import vn.com.ltdt.Coffee_Shop.product.ProductDetail;
 import vn.com.ltdt.Coffee_Shop.rating.Rating;
 import vn.com.ltdt.Coffee_Shop.product.dtos.ProductDTO;
 import vn.com.ltdt.Coffee_Shop.product.dtos.ProductDetailDTO;
+import vn.com.ltdt.Coffee_Shop.rating.RatingDTO;
 
 @Service
 @RequiredArgsConstructor
 public class ProductMapper {
 
-    private final ImageMapper mapper;
 
     public ProductDTO mapToDTO(Product product) {
         return new ProductDTO(
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
-                product.getRatings().isEmpty() ? 0f : product.getRatings().stream().mapToDouble(Rating::getRating).average().getAsDouble(),
+                product.getRatings().isEmpty() ? 0.0 : product.getRatings().stream().mapToDouble(Rating::getRating).average().orElse(0.0),
                 product.getRatings().size(),
                 product.getCategory().getId(),
                 product.getCategory().getName(),

@@ -47,6 +47,14 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
 
+    if (viewModel.categoriesState.value.isLoading) {
+        CircularProgressIndicator()
+    }
+
+    if (viewModel.categoriesState.value.error.isNotBlank()) {
+        Text(text = viewModel.categoriesState.value.error)
+    }
+    
     LazyColumn(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -153,15 +161,6 @@ fun HomeScreen(
                 }
             }
 
-
-            if (viewModel.categoriesState.value.isLoading) {
-                CircularProgressIndicator()
-            }
-
-            if (viewModel.categoriesState.value.error.isNotBlank()) {
-                Text(text = viewModel.categoriesState.value.error)
-            }
-
             Spacer(modifier = Modifier.height(20.dp))
 
             Text(
@@ -183,8 +182,7 @@ fun HomeScreen(
             ) {
                 items(
                     viewModel.productsState.value.products.filter {
-//                        it.categoryName.equals("BEAN")
-                        it.categoryId == 1
+                        it.categoryName == "Bean"
                     },
                     key = { item -> item.id }) { item: Product ->
                     ProductCard(
@@ -197,6 +195,8 @@ fun HomeScreen(
                     )
                 }
             }
+
+
         }
     }
 }

@@ -40,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
     public String signupCustomer(CustomerRegisterDTO request) {
         Customer customer = new Customer();
         Role role = roleRepository.findByName("ROLE_CUSTOMER")
-        .orElse(roleRepository.save(Role.builder().name("ROLE_CUSTOMER").build()));
+                .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_CUSTOMER").build()));
         customer.setName(request.name());
         customer.setEmail(request.email());
         customer.setPassword(passwordEncoder.encode(request.password()));
@@ -53,7 +53,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String signupEmployee(EmployeeRegisterDTO request) {
         Role role = roleRepository.findByName("ROLE_EMPLOYEE")
-        .orElse(roleRepository.save(Role.builder().name("ROLE_EMPLOYEE").build()));
+                .orElseGet(() -> roleRepository.save(Role.builder().name("ROLE_EMPLOYEE").build()));
         Employee employee = new Employee();
         employee.setName(request.name());
         employee.setEmail(request.email());

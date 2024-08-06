@@ -243,7 +243,7 @@ fun ProductDetailScreen(
                                 icon = painterResource(id = R.drawable.dollar_sign),
                                 iconSize = 25,
                                 textSize = 20,
-                                text = viewModel.productState.value.product?.details?.get(0)?.price.toString()
+                                text = viewModel.selectedDetailState.value?.price.toString()
                             )
                         }
                         Button(
