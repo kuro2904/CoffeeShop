@@ -5,10 +5,7 @@
 Back-end: Spring boot <br>
 Database: MySQL <br>
 Font-end: <br> 
-Admin Panel: Angular 18
 <ul>
-  Mobile (2 versions): 
-  <li> React-native (on developing) </li> 
   <li>Native (Jetpack compose)</li>
 </ul>
 </p>
